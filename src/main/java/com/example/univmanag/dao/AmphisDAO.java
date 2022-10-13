@@ -40,4 +40,27 @@ return amphisList;
         System.out.println(amphisList);
         return amphisList;
     }
+
+    public static boolean addAmphi(int i, String nom, int capacite, boolean available, String s) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("INSERT INTO Amphis(id,nom,capacite,available,image) values (?,?,?,?,?)");
+            ps.setInt(1, i);
+            ps.setString(2, nom);
+            ps.setInt(3, capacite);
+            ps.setBoolean(4, false);
+            ps.setString(5, s);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+            return false;
+        } finally {
+            DataConnect.close(con);
+        }
+        return true;
+    }
 }

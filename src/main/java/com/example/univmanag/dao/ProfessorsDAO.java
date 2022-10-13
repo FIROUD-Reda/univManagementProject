@@ -44,4 +44,27 @@ public class ProfessorsDAO {
         System.out.println(professorsList);
         return professorsList;
     }
+    public static boolean addProfessor(int a, String nom, String sex, String departement, String image) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("INSERT INTO Professors(id,nom,sex,available,departement,image) values (?,?,?,?,?,?)");
+            ps.setInt(1, a);
+            ps.setString(2, nom);
+            ps.setString(3, sex);
+            ps.setBoolean(4, false);
+            ps.setString(5, departement);
+            ps.setString(6, image);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+            return false;
+        } finally {
+            DataConnect.close(con);
+        }
+        return true;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.univmanag.beans;
 
+import com.example.univmanag.dao.AmphisDAO;
 import com.example.univmanag.dao.SallesDAO;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
@@ -99,5 +100,13 @@ private String departement;
                 ", image='" + image + '\'' +
                 ", departement='" + departement + '\'' +
                 '}';
+    }
+
+    public String addSalle() {
+        boolean persisted= SallesDAO.addSalle((int) (Math.random() * 900) + 25,nom,capacite,departement,"https://www.educationcorner.com/images/featured-classroom-design-layout.jpg");
+        if(persisted)
+            return "Salles";
+        else
+            return "addSalle";
     }
 }

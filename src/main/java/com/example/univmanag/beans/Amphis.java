@@ -1,6 +1,7 @@
 package com.example.univmanag.beans;
 
 import com.example.univmanag.dao.AmphisDAO;
+import com.example.univmanag.dao.ProfessorsDAO;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
@@ -78,5 +79,13 @@ public class Amphis implements Serializable {
 
     public List<Amphis> getAmphis() {
         return AmphisDAO.getAmphis();
+    }
+
+    public String addAmphi() {
+        boolean persisted= AmphisDAO.addAmphi((int) (Math.random() * 900) + 25,nom,capacite,available,"https://www.letudiant.fr/uploads/mediatheque/ETU_ETU/7/4/253974-universite-versailles-saint-quentin-uvsq-amphi-licence-1-droit-septembre-2014-camille-stromboni-6-original.jpg");
+        if(persisted)
+            return "amphis";
+        else
+            return "addAmphi";
     }
 }

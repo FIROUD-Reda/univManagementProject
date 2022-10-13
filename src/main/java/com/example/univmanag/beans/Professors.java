@@ -90,4 +90,11 @@ public class Professors implements Serializable {
     }
 
 
+    public String addProfessor() {
+        boolean persisted=ProfessorsDAO.addProfessor((int) (Math.random() * 900) + 25,nom,sex,departement,"https://img.freepik.com/photos-gratuite/senior-professeur-masculin-expliquer-ecrire-au-tableau-vert_23-2148200956.jpg?w=2000");
+        if(persisted)
+            return "Professors";
+        else
+            return "addProfessor";
+    }
 }

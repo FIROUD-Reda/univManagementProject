@@ -51,7 +51,7 @@ public class RessourcesDAO {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Ressources(i,nom,type,available,departement,image) values (?,?,?,?,?,?)");
+            ps = con.prepareStatement("INSERT INTO Ressources(id,nom,type,available,departement,image) values (?,?,?,?,?,?)");
             ps.setInt(1, i);
             ps.setString(2, nom);
             ps.setString(3, type);

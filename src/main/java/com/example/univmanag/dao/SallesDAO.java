@@ -44,4 +44,28 @@ public class SallesDAO {
         System.out.println(sallesList);
         return sallesList;
     }
+
+    public static boolean addSalle(int i, String nom, int capacite, String departement, String s) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("INSERT INTO Salles(id,nom,capacite,available,departement,image) values (?,?,?,?,?,?)");
+            ps.setInt(1, i);
+            ps.setString(2, nom);
+            ps.setInt(3, capacite);
+            ps.setBoolean(4, false);
+            ps.setString(5, departement);
+            ps.setString(6, s);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+            return false;
+        } finally {
+            DataConnect.close(con);
+        }
+        return true;
+    }
 }
