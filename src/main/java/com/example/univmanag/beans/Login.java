@@ -1,4 +1,5 @@
 package com.example.univmanag.beans;
+
 import java.io.Serializable;
 
 
@@ -19,6 +20,43 @@ public class Login implements Serializable {
     private String pwd;
     private String msg;
     private String user;
+
+    private String firstName;
+    private String lastName;
+    private String university;
+    private String faculty;
+
+    public String getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(String faculty) {
+        this.faculty = faculty;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public String getPwd() {
         return pwd;
@@ -48,7 +86,7 @@ public class Login implements Serializable {
     public String validateUsernamePassword() {
         boolean valid = LoginDAO.validate(user, pwd);
         if (valid) {
-            System.out.println(user+pwd);
+            System.out.println(user + pwd);
             HttpSession session = SessionUtils.getSession();
             session.setAttribute("username", user);
             return "admin";
@@ -62,10 +100,28 @@ public class Login implements Serializable {
         }
     }
 
+    public String register() {
+        boolean valid = LoginDAO.verifyExistence(user);
+        if (valid) {
+            System.out.println(user);
+            boolean registred = LoginDAO.persist(user, pwd, firstName, lastName, university, faculty);
+            if(registred)
+                return "login";
+            else
+                return "register";
+        }
+        return "register";
+    }
+
     //logout event, invalidate session
     public String logout() {
         HttpSession session = SessionUtils.getSession();
         session.invalidate();
         return "login";
     }
+
+    public String reroute(String sthg) {
+        return sthg;
+    }
+
 }

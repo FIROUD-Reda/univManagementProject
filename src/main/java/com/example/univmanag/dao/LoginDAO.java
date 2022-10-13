@@ -35,4 +35,53 @@ public class LoginDAO {
         }
         return false;
     }
+
+    public static boolean verifyExistence(String user) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("Select uname from Users where uname = ?");
+            ps.setString(1, user);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                //result found, means valid inputs
+                return false;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+            return false;
+        } finally {
+            DataConnect.close(con);
+        }
+        return true;
+    }
+
+    public static boolean persist(String user, String pwd, String firstName, String lastName, String university, String faculty) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("INSERT INTO Users(uid,uname,password,firstName,lastName,university,faculty) values (?,?,?,?,?,?,?)");
+            ps.setString(1, String.valueOf((int)(Math.random()*900)+25));
+            ps.setString(2, user);
+            ps.setString(3, pwd);
+            ps.setString(4, firstName);
+            ps.setString(5, lastName);
+            ps.setString(6, university);
+            ps.setString(7, faculty);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+            return false;
+        } finally {
+            DataConnect.close(con);
+        }
+        return true;
+    }
 }

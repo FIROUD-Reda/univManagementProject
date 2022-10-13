@@ -1,0 +1,93 @@
+package com.example.univmanag.beans;
+
+import com.example.univmanag.dao.ProfessorsDAO;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
+
+import java.io.Serializable;
+import java.util.List;
+
+@Named
+@SessionScoped
+public class Professors implements Serializable {
+    private String nom;
+    private Long id;
+    private boolean available;
+    private String image;
+    private String departement;
+    private String sex;
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(String departement) {
+        this.departement = departement;
+    }
+
+    public Professors() {
+    }
+
+    public Professors(String nom, Long id, String sex, boolean available, String image, String departement) {
+        this.nom = nom;
+        this.id = id;
+        this.sex = sex;
+        this.available = available;
+        this.image = image;
+        this.departement = departement;
+    }
+    public Professors(String nom, String sex, boolean available, String image, String departement) {
+        this.nom = nom;
+        this.id =  (long) (Math.random() * 900) + 25;
+        this.sex = sex;
+        this.available = available;
+        this.image = image;
+        this.departement = departement;
+    }
+
+    public List<Professors> getProfessors() {
+        return ProfessorsDAO.getProfessors();
+    }
+
+
+}

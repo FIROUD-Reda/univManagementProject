@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Registration Page</title>
+    <meta  name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../WEB-INF/lib/register.css" />
+</h:head>
+<h:body>
+    <f:view>
+        <div class="h-100 bg-dark">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col">
+                        <div class="card card-registration my-4">
+                            <div class="row g-0">
+                                <div class="col-xl-6 d-none d-xl-block">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                                         alt="Sample photo" class="img-fluid"
+                                         style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem;" />
+                                </div>
+                                <div class="col-xl-6">
+                                    <h:form id="registerForm">
+                                    <div class="card-body p-md-5 text-black">
+                                        <h3 class="mb-5 text-uppercase"> Registration form</h3>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
+                                                    <h:inputText id="fname" class="form-control form-control-lg"  value="#{login.firstName}"
+                                                                 required="true" requiredMessage="Please enter your first name" />
+                                                    <h:message for="fname" style="color:red" />
+                                                    <label class="form-label" for="fname">First name</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-4">
+                                                <div class="form-outline">
+                                                   <h:inputText id="lname"  class="form-control form-control-lg" value="#{login.lastName}"
+                                                                     required="true" requiredMessage="Please enter your last name" />
+                                                    <h:message for="lname" style="color:red" />
+                                                    <label class="form-label" for="lname">Last name</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-outline mb-4">
+                                            <h:inputText id="email" class="form-control form-control-lg"  value="#{login.user}"
+                                                             required="true" requiredMessage="Please enter your email id" />
+                                            <h:message for="email" style="color:red" />
+                                            <label class="form-label" for="email">Address Email</label>
+                                        </div>
+
+
+
+                                        <div class="form-outline mb-4">
+                                            <h:inputSecret id="psw" class="form-control form-control-lg" value="#{login.pwd}"
+                                                               required="true" requiredMessage="Please enter your password" />
+                                            <h:message for="psw" style="color:red" />
+                                            <label class="form-label" for="psw">Password</label>
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <h:inputText id="univ" class="form-control form-control-lg"  value="#{login.university}"
+                                                         required="true" requiredMessage="Please enter your university" />
+                                            <h:message for="univ" style="color:red" />
+                                            <label class="form-label" for="univ">University</label>
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <h:inputText id="fac" class="form-control form-control-lg"  value="#{login.faculty}"
+                                                         required="true" requiredMessage="Please enter your faculty" />
+                                            <h:message for="fac" style="color:red" />
+                                            <label class="form-label" for="fac">Faculty</label>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end pt-3">
+                                            <h:commandButton class="btn btn-warning btn-lg ms-2" value="Register" action="#{login.register}" />
+                                        </div>
+
+                                    </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:view>
+</h:body>
+</html>
+
