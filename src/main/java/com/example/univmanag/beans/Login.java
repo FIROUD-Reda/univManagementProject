@@ -3,8 +3,9 @@ package com.example.univmanag.beans;
 import java.io.Serializable;
 
 
-import com.example.univmanag.dao.LoginDAO;
-import jakarta.annotation.ManagedBean;
+import com.example.univmanag.dao.LoginDAOImpl;
+import com.example.univmanag.dao.LoginDao;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -25,6 +26,9 @@ public class Login implements Serializable {
     private String lastName;
     private String university;
     private String faculty;
+
+    @EJB
+    private LoginDao loginService ;
 
     public String getFaculty() {
         return faculty;
@@ -84,7 +88,7 @@ public class Login implements Serializable {
 
     //validate login
     public String validateUsernamePassword() {
-        boolean valid = LoginDAO.validate(user, pwd);
+        boolean valid = loginService.validate(user, pwd);
         if (valid) {
             System.out.println(user + pwd);
             HttpSession session = SessionUtils.getSession();
@@ -101,10 +105,10 @@ public class Login implements Serializable {
     }
 
     public String register() {
-        boolean valid = LoginDAO.verifyExistence(user);
+        boolean valid = loginService.verifyExistence(user);
         if (valid) {
             System.out.println(user);
-            boolean registred = LoginDAO.persist(user, pwd, firstName, lastName, university, faculty);
+            boolean registred = LoginDAOImpl.persist(user, pwd, firstName, lastName, university, faculty);
             if(registred)
                 return "login";
             else

@@ -2,6 +2,8 @@ package com.example.univmanag.dao;
 
 import com.example.univmanag.beans.Ressources;
 import com.example.univmanag.util.DataConnect;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RessourcesDAO {
-    public static List<Ressources> getRessources() {
+@Local(ResourcesDao.class)
+@Stateless
+public class RessourcesDAOImpl implements  ResourcesDao {
+    public List<Ressources> getRessources() {
         Connection con = null;
         PreparedStatement ps = null;
         List<Ressources> ressourcesList = new ArrayList<>();
@@ -45,7 +49,7 @@ public class RessourcesDAO {
         return ressourcesList;
     }
 
-    public static boolean addRessource(int i, String nom, String type, String departement, String image) {
+    public boolean addRessource(int i, String nom, String type, String departement, String image) {
         Connection con = null;
         PreparedStatement ps = null;
         try {

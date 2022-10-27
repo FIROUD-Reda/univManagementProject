@@ -8,7 +8,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-   <title>Ressources Page</title>
+   <title>Professors Page</title>
    <meta  name="viewport" content="width=device-width, initial-scale=1" http-equiv="X-UA-Conpatible" />
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
    <link rel="stylesheet" href="../WEB-INF/lib/register.css" />
@@ -17,30 +17,18 @@
    <f:view>
       <div style="background-color: #eee;">
          <div class="text-center container py-5">
-
-            <h:form>
-               <h:commandButton style="position: absolute ;
-            left: 50px;
-            top: 100px;
-            " class="btn btn-primary btn mb-1" value="Disponibles" actionListener="#{amphis.processConsoleAction}" />
-               <h:commandButton style="position: absolute ;
-            left: 170px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Réservés" actionListener="#{amphis.processConsoleAction}" />
-            </h:form>
-
-
-            <h4 class="mt-4 mb-5"><strong>Ressources</strong></h4>
+            <h4 class="mt-4 mb-5"><strong>Professors</strong></h4>
 
             <div class="row">
-               <c:forEach var="ressource" items="#{ressources.getRessources()}" >
+               <c:forEach var="professor" items="#{professors.getProfessors()}" >
                   <div class="col-lg-4 col-md-12 mb-4">
                      <div class="card" >
                         <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
-                           <img src="#{ressource.image}" class="w-100" height="250" alt="image amphi"/>
+                           <img src="#{professor.image}" class="w-100" height="250" alt="image amphi"/>
                            <a href="#!">
                               <div class="mask">
                                  <div class="d-flex justify-content-start align-items-end h-100">
-                                    <h5><span class="#{ressource.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{ressource.available?"available":"non available"}</span></h5>
+                                    <h5><span class="#{professor.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{professor.available?"available":"non available"}</span></h5>
                                  </div>
                               </div>
 
@@ -48,13 +36,13 @@
                         </div>
                         <div class="card-body">
                            <a href="" class="text-reset">
-                              <h5 class="card-title mb-3">#{ressource.nom}</h5>
+                              <h5 class="card-title mb-3">#{professor.nom}</h5>
                            </a>
                            <a href="" class="text-reset">
-                              <p>Departement:#{ressource.departement}</p>
+                              <p>Departement:#{professor.departement}</p>
                            </a>
                            <a href="" class="text-reset">
-                              <p>Type:#{ressource.type}</p>
+                              <p>Sex:#{professor.sex}</p>
                            </a>
                            <h6 class="mb-3"> </h6>
                         </div>
@@ -63,7 +51,7 @@
 
                </c:forEach>
                <h:form>
-               <h:commandLink  class="btn btn-success fixed-bottom" action="#{login.reroute('addRessource')}" value="Ajouter Ressource"/>
+                  <h:commandLink  class="btn btn-success fixed-bottom" action="#{login.reroute('addProfessor')}" value="Ajouter Professeur"/>
                </h:form>
             </div>
          </div>

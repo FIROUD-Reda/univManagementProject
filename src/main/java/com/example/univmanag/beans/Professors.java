@@ -1,7 +1,10 @@
 package com.example.univmanag.beans;
 
-import com.example.univmanag.dao.ProfessorsDAO;
+import com.example.univmanag.dao.ProfesorsDao;
+import com.example.univmanag.dao.ProfessorsDAOImpl;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.event.ActionEvent;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
@@ -16,6 +19,9 @@ public class Professors implements Serializable {
     private String image;
     private String departement;
     private String sex;
+
+    @EJB
+    ProfesorsDao profesorsDao ;
 
     public String getNom() {
         return nom;
@@ -86,15 +92,20 @@ public class Professors implements Serializable {
     }
 
     public List<Professors> getProfessors() {
-        return ProfessorsDAO.getProfessors();
+        return profesorsDao.getProfessors();
     }
 
 
     public String addProfessor() {
-        boolean persisted=ProfessorsDAO.addProfessor((int) (Math.random() * 900) + 25,nom,sex,departement,"https://img.freepik.com/photos-gratuite/senior-professeur-masculin-expliquer-ecrire-au-tableau-vert_23-2148200956.jpg?w=2000");
+        boolean persisted= profesorsDao.addProfessor((int) (Math.random() * 900) + 25,nom,sex,departement,"https://img.freepik.com/photos-gratuite/senior-professeur-masculin-expliquer-ecrire-au-tableau-vert_23-2148200956.jpg?w=2000");
         if(persisted)
             return "Professors";
         else
             return "addProfessor";
     }
+
+    public  void processConsoleAction(ActionEvent event){
+        System.out.println(event);
+    }
+
 }

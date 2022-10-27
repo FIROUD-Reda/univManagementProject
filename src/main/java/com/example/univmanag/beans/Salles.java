@@ -1,8 +1,10 @@
 package com.example.univmanag.beans;
 
-import com.example.univmanag.dao.AmphisDAO;
-import com.example.univmanag.dao.SallesDAO;
+import com.example.univmanag.dao.SallesDAOImpl;
+import com.example.univmanag.dao.SallesDao;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.event.ActionEvent;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
@@ -16,6 +18,10 @@ public class Salles implements Serializable {
     private int capacite;
     private boolean available;
     private String image;
+
+    @EJB
+    private SallesDao sallesDao ;
+
 private String departement;
 
     public String getNom() {
@@ -87,7 +93,7 @@ private String departement;
     }
 
     public List<Salles> getSalles() {
-        return SallesDAO.getSalles();
+        return sallesDao.getSalles();
     }
 
     @Override
@@ -102,11 +108,15 @@ private String departement;
                 '}';
     }
 
-    public String addSalle() {
-        boolean persisted= SallesDAO.addSalle((int) (Math.random() * 900) + 25,nom,capacite,departement,"https://www.educationcorner.com/images/featured-classroom-design-layout.jpg");
+    public  String  addSalle() {
+        boolean persisted= sallesDao.addSalle((int) (Math.random() * 900) + 25,nom,capacite,departement,"https://www.educationcorner.com/images/featured-classroom-design-layout.jpg");
         if(persisted)
             return "Salles";
         else
             return "addSalle";
+    }
+
+    public  void processConsoleAction(ActionEvent event){
+        System.out.println(event);
     }
 }

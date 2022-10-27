@@ -1,7 +1,9 @@
 package com.example.univmanag.dao;
 
-import com.example.univmanag.beans.Professors;
+import com.example.univmanag.beans.Salles;
 import com.example.univmanag.util.DataConnect;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,53 +12,56 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfessorsDAO {
-    public static List<Professors> getProfessors() {
+@Local(SallesDao.class)
+@Stateless
+public class SallesDAOImpl implements  SallesDao {
+    public  List<Salles> getSalles() {
         Connection con = null;
         PreparedStatement ps = null;
-        List<Professors> professorsList = new ArrayList<>();
+        List<Salles> sallesList = new ArrayList<>();
         try {
 
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select nom, available, sex,image,departement from Professors");
+            ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String nom = rs.getString("nom");
-                String sex = rs.getString("sex");
+                int capacite = rs.getInt("capacite");
                 boolean available=rs.getBoolean("available");
                 String image=rs.getString("image");
                 String departement=rs.getString("departement");
                 //Assuming you have a user object
-                Professors professors = new Professors(nom,sex,available,image,departement);
+                Salles salles = new Salles(nom,capacite,available,image,departement);
 
-                professorsList.add(professors);
+                sallesList.add(salles);
             }
             System.out.println("hi");
-            System.out.println(professorsList);
+            System.out.println(sallesList);
             System.out.println("by");
         } catch (SQLException ex) {
             System.out.println("Login error -->" + ex.getMessage());
-            return professorsList;
+            return sallesList;
         } finally {
             DataConnect.close(con);
         }
-        System.out.println(professorsList);
-        return professorsList;
+        System.out.println(sallesList);
+        return sallesList;
     }
-    public static boolean addProfessor(int a, String nom, String sex, String departement, String image) {
+
+    public  boolean addSalle(int i, String nom, int capacite, String departement, String s) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Professors(id,nom,sex,available,departement,image) values (?,?,?,?,?,?)");
-            ps.setInt(1, a);
+            ps = con.prepareStatement("INSERT INTO Salles(id,nom,capacite,available,departement,image) values (?,?,?,?,?,?)");
+            ps.setInt(1, i);
             ps.setString(2, nom);
-            ps.setString(3, sex);
+            ps.setInt(3, capacite);
             ps.setBoolean(4, false);
             ps.setString(5, departement);
-            ps.setString(6, image);
+            ps.setString(6, s);
             ps.executeUpdate();
 
         } catch (SQLException ex) {

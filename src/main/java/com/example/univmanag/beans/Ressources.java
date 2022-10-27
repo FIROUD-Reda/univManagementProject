@@ -1,7 +1,9 @@
 package com.example.univmanag.beans;
 
-import com.example.univmanag.dao.RessourcesDAO;
+import com.example.univmanag.dao.ResourcesDao;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.event.ActionEvent;
 import jakarta.inject.Named;
 
 import java.io.File;
@@ -17,6 +19,10 @@ public class Ressources implements Serializable {
     String departement;
     String image;
     File imaj;
+
+    @EJB
+    ResourcesDao resourcesDao ;
+
 
     public File getImaj() {
         return imaj;
@@ -98,14 +104,18 @@ public class Ressources implements Serializable {
     }
 
     public List<Ressources> getRessources() {
-        return RessourcesDAO.getRessources();
+        return resourcesDao.getRessources();
     }
 
     public String addRessource() {
-        boolean persisterd=RessourcesDAO.addRessource((int) (Math.random() * 900) + 25,nom,type,departement,"https://images.samsung.com/is/image/samsung/p6pim/n_africa/ua75au7000uxmv/gallery/n-africa-uhd-au7000-ua75au7000uxmv-395443214?$720_576_PNG$");
+        boolean persisterd=resourcesDao.addRessource((int) (Math.random() * 900) + 25,nom,type,departement,"https://images.samsung.com/is/image/samsung/p6pim/n_africa/ua75au7000uxmv/gallery/n-africa-uhd-au7000-ua75au7000uxmv-395443214?$720_576_PNG$");
         if(persisterd)
             return "ressources";
         else
             return "addRessource";
+    }
+
+    public  void processConsoleAction(ActionEvent event){
+        System.out.println(event);
     }
 }

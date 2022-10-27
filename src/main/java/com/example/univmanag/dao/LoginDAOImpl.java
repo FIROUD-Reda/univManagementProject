@@ -1,6 +1,8 @@
 package com.example.univmanag.dao;
 
 import com.example.univmanag.util.DataConnect;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class LoginDAO {
+@Local(LoginDao.class)
+@Stateless
+public class LoginDAOImpl implements  LoginDao {
 
-    public static boolean validate(String user, String password) {
+    public  boolean validate(String user, String password) {
         Connection con = null;
         PreparedStatement ps = null;
 
@@ -36,7 +40,7 @@ public class LoginDAO {
         return false;
     }
 
-    public static boolean verifyExistence(String user) {
+    public  boolean verifyExistence(String user) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
