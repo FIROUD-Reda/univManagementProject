@@ -23,6 +23,15 @@ public class Salles implements Serializable {
     private SallesDao sallesDao ;
 
 private String departement;
+    private String show="all";
+
+    public SallesDao getSallesDao() {
+        return sallesDao;
+    }
+
+    public void setSallesDao(SallesDao sallesDao) {
+        this.sallesDao = sallesDao;
+    }
 
     public String getNom() {
         return nom;
@@ -93,9 +102,29 @@ private String departement;
     }
 
     public List<Salles> getSalles() {
-        return sallesDao.getSalles();
+        return sallesDao.getSalles(show);
+    }
+    public void processConsoleActionDisponible(ActionEvent event) {
+        this.show = "available";
     }
 
+    public void processConsoleActionReserve(ActionEvent event) {
+        this.show = "taken";
+
+    }
+    public void processConsoleActionAll(ActionEvent event) {
+        this.show = "all";
+
+    }
+    public void processConsoleActionMakeReservation(String nom,Boolean available) {
+        System.out.println("hiiiii reda");
+        System.out.println("salam reda "+nom+available);
+        if(available)
+            sallesDao.makeSalleReserved(nom);
+        else
+            sallesDao.makeSalleUnReserved(nom);
+
+    }
     @Override
     public String toString() {
         return "Salles{" +
@@ -109,7 +138,7 @@ private String departement;
     }
 
     public  String  addSalle() {
-        boolean persisted= sallesDao.addSalle((int) (Math.random() * 900) + 25,nom,capacite,departement,"https://www.educationcorner.com/images/featured-classroom-design-layout.jpg");
+        boolean persisted= sallesDao.addSalle((int) (Math.random() * 900) + 25,nom,capacite,departement,image);
         if(persisted)
             return "Salles";
         else

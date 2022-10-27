@@ -16,28 +16,36 @@ import java.util.List;
 @Stateless
 public class AmphisDAOImpl implements AmphiDao {
 
-    public  List<Amphis> getAmphis() {
+    public List<Amphis> getAmphis(String show) {
         Connection con = null;
         PreparedStatement ps = null;
         List<Amphis> amphisList = new ArrayList<>();
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select nom, capacite, available,image from Amphis");
+            if (show.equals("all"))
+                ps = con.prepareStatement("Select nom, capacite, available,image from Amphis");
+            else if (show.equals("available")){
+                ps = con.prepareStatement("Select nom, capacite, available,image from Amphis where available=?");
+            ps.setBoolean(1, true);}
+            else if (show.equals("taken")){
+                ps = con.prepareStatement("Select nom, capacite, available,image from Amphis where available=?");
+            ps.setBoolean(1, false);}
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String nom = rs.getString("nom");
                 int capacite = rs.getInt("capacite");
-                boolean available=rs.getBoolean("available");
-                String image=rs.getString("image");
+                boolean available = rs.getBoolean("available");
+                String image = rs.getString("image");
                 //Assuming you have a user object
-                Amphis amphis = new Amphis(nom, capacite,available,image);
+                Amphis amphis = new Amphis(nom, capacite, available, image);
 
                 amphisList.add(amphis);
             }
         } catch (SQLException ex) {
             System.out.println("Login error -->" + ex.getMessage());
-return amphisList;
+            return amphisList;
         } finally {
             DataConnect.close(con);
         }
@@ -45,6 +53,42 @@ return amphisList;
         return amphisList;
     }
 
+    @Override
+    public void makeAmphiReserved(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("update Amphis set available=? where nom=?");
+            ps.setBoolean(1, false);
+            ps.setString(2, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
+    @Override
+    public void makeAmphiUnReserved(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("update Amphis set available=? where nom=?");
+            ps.setBoolean(1, true);
+            ps.setString(2, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
     public boolean addAmphi(int i, String nom, int capacite, boolean available, String s) {
         Connection con = null;
         PreparedStatement ps = null;

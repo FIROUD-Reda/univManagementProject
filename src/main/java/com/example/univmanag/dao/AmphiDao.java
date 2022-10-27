@@ -5,6 +5,10 @@ import com.example.univmanag.beans.Amphis;
 import java.util.List;
 
 public interface AmphiDao {
-     boolean addAmphi(int i, String nom, int capacite, boolean available, String s);
-      List<Amphis> getAmphis() ;
+    void makeAmphiUnReserved(String nom);
+
+    boolean addAmphi(int i, String nom, int capacite, boolean available, String s);
+      List<Amphis> getAmphis(String show) ;
+
+    void makeAmphiReserved(String nom);
 }

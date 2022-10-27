@@ -108,7 +108,7 @@ public class Login implements Serializable {
         boolean valid = loginService.verifyExistence(user);
         if (valid) {
             System.out.println(user);
-            boolean registred = LoginDAOImpl.persist(user, pwd, firstName, lastName, university, faculty);
+            boolean registred = loginService.persist(user, pwd, firstName, lastName, university, faculty);
             if(registred)
                 return "login";
             else

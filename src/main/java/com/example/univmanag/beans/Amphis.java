@@ -5,8 +5,10 @@ import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
-import jakarta.faces.event.ActionEvent ;
+import jakarta.faces.event.ActionEvent;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -18,9 +20,27 @@ public class Amphis implements Serializable {
     private int capacite;
     private boolean available;
     private String image;
+    private String theme = "#FFFFFF";
+    private String text="#000000";
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getTheme() {
+        return this.theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 
     @EJB
-    private AmphiDao amphisDAO ;
+    private AmphiDao amphisDAO;
 
     public String getImage() {
         return image;
@@ -30,20 +50,20 @@ public class Amphis implements Serializable {
         this.image = image;
     }
 
-    public Amphis(String nom, int capacite, boolean available,String image) {
-        this.id= (long) (Math.random() * 900) + 25;
-        this.nom=nom;
-        this.capacite=capacite;
-        this.available=available;
-        this.image=image;
+    public Amphis(String nom, int capacite, boolean available, String image) {
+        this.id = (long) (Math.random() * 900) + 25;
+        this.nom = nom;
+        this.capacite = capacite;
+        this.available = available;
+        this.image = image;
     }
 
-    public Amphis(String nom, Long id, int capacite, boolean available,String image) {
+    public Amphis(String nom, Long id, int capacite, boolean available, String image) {
         this.nom = nom;
         this.id = id;
         this.capacite = capacite;
         this.available = available;
-        this.image=image;
+        this.image = image;
     }
 
     public Amphis() {
@@ -81,20 +101,51 @@ public class Amphis implements Serializable {
         this.available = available;
     }
 
+    String show = "all";
+
     public List<Amphis> getAmphis() {
-        return amphisDAO.getAmphis();
+        System.out.println("im being called");
+        return amphisDAO.getAmphis(show);
     }
 
     public String addAmphi() {
-        boolean persisted= amphisDAO.addAmphi((int) (Math.random() * 900) + 25,nom,capacite,available,"https://www.letudiant.fr/uploads/mediatheque/ETU_ETU/7/4/253974-universite-versailles-saint-quentin-uvsq-amphi-licence-1-droit-septembre-2014-camille-stromboni-6-original.jpg");
-        if(persisted)
+        boolean persisted = amphisDAO.addAmphi((int) (Math.random() * 900) + 25, nom, capacite, available, "https://www.letudiant.fr/uploads/mediatheque/ETU_ETU/7/4/253974-universite-versailles-saint-quentin-uvsq-amphi-licence-1-droit-septembre-2014-camille-stromboni-6-original.jpg");
+        if (persisted)
             return "amphis";
         else
             return "addAmphi";
     }
 
-    public  void processConsoleAction(ActionEvent event){
-        System.out.println(event);
+    public void processConsoleActionDisponible(ActionEvent event) {
+        this.show = "available";
     }
 
+    public void processConsoleActionReserve(ActionEvent event) {
+        this.show = "taken";
+
+    }
+    public void processConsoleActionAll(ActionEvent event) {
+        this.show = "all";
+
+    }
+    public void processConsoleActionMakeReservation(String nom,Boolean available) {
+        System.out.println("hiiiii reda");
+        System.out.println("salam reda "+nom+available);
+        if(available)
+        amphisDAO.makeAmphiReserved(nom);
+        else
+            amphisDAO.makeAmphiUnReserved(nom);
+
+    }
+    public void processConsoleActionTheme(ActionEvent event) {
+        if (this.theme == "#000000")
+            this.theme = "#FFFFFF";
+        else
+            this.theme = "#000000";
+
+        if (this.text == "#000000")
+            this.text = "#FFFFFF";
+        else
+            this.text = "#000000";
+    }
 }

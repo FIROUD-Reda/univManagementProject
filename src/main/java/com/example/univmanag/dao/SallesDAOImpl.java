@@ -15,7 +15,7 @@ import java.util.List;
 @Local(SallesDao.class)
 @Stateless
 public class SallesDAOImpl implements  SallesDao {
-    public  List<Salles> getSalles() {
+    public  List<Salles> getSalles(String show) {
         Connection con = null;
         PreparedStatement ps = null;
         List<Salles> sallesList = new ArrayList<>();
@@ -23,7 +23,14 @@ public class SallesDAOImpl implements  SallesDao {
 
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles");
+            if (show.equals("all"))
+                ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles");
+            else if (show.equals("available")){
+                ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles where available=?");
+                ps.setBoolean(1, true);}
+            else if (show.equals("taken")){
+                ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles where available=?");
+                ps.setBoolean(1, false);}
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String nom = rs.getString("nom");
@@ -47,6 +54,44 @@ public class SallesDAOImpl implements  SallesDao {
         }
         System.out.println(sallesList);
         return sallesList;
+    }
+
+    @Override
+    public void makeSalleUnReserved(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("update Salles set available=? where nom=?");
+            ps.setBoolean(1, true);
+            ps.setString(2, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
+
+    @Override
+    public void makeSalleReserved(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("update Salles set available=? where nom=?");
+            ps.setBoolean(1, false);
+            ps.setString(2, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
     }
 
     public  boolean addSalle(int i, String nom, int capacite, String departement, String s) {

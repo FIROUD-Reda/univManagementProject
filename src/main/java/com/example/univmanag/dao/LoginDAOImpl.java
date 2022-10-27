@@ -15,6 +15,7 @@ import java.sql.SQLException;
 public class LoginDAOImpl implements  LoginDao {
 
     public  boolean validate(String user, String password) {
+        System.out.println("calling validate"+user+password);
         Connection con = null;
         PreparedStatement ps = null;
 
@@ -64,7 +65,7 @@ public class LoginDAOImpl implements  LoginDao {
         return true;
     }
 
-    public static boolean persist(String user, String pwd, String firstName, String lastName, String university, String faculty) {
+    public boolean persist(String user, String pwd, String firstName, String lastName, String university, String faculty) {
         Connection con = null;
         PreparedStatement ps = null;
         try {

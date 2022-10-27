@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 public class DataConnect {
 
     public static Connection getConnection() {
+        System.out.println("calling connection");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
