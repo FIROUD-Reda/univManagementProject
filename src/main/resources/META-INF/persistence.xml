@@ -4,6 +4,13 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
     <persistence-unit name="default">
-
+        <datasources>
+            <local-tx-datasource>
+                <jndi-name> GestionClients </jndi-name>
+                <connection-url>jdbc:mysql://192.168.0.6:3306/ GestionClients </connection-url>
+                <driver-class>com.mysql.jdbc.Driver</driver-class>
+                <user-name>user</user-name>
+                <password>password</password>
+            </local-tx-datasource> </datasources>
     </persistence-unit>
 </persistence>

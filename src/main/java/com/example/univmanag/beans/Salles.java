@@ -8,22 +8,52 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Named
 @SessionScoped
 public class Salles implements Serializable {
     private String nom;
+    private String datedebut;
+    private String datefin;
     private Long id;
     private int capacite;
     private boolean available;
     private String image;
-
+    private String departement;
+    private String show="all";
     @EJB
     private SallesDao sallesDao ;
+    public String getDatedebut() {
+        return datedebut;
+    }
 
-private String departement;
-    private String show="all";
+    public void setDatedebut(String datedebut) {
+        this.datedebut = datedebut;
+    }
+
+    public String getDatefin() {
+        return datefin;
+    }
+
+    public void setDatefin(String datefin) {
+        this.datefin = datefin;
+    }
+
+    public String getShow() {
+        return show;
+    }
+
+    public void setShow(String show) {
+        this.show = show;
+    }
+
+
+
+
 
     public SallesDao getSallesDao() {
         return sallesDao;
@@ -104,6 +134,10 @@ private String departement;
     public List<Salles> getSalles() {
         return sallesDao.getSalles(show);
     }
+    public String reserveSalle(String nom,String datedebut,String datefin) throws ParseException {
+        sallesDao.reserveSalle(nom,datedebut,datefin);
+        return "Salles";
+    }
     public void processConsoleActionDisponible(ActionEvent event) {
         this.show = "available";
     }
@@ -123,6 +157,12 @@ private String departement;
             sallesDao.makeSalleReserved(nom);
         else
             sallesDao.makeSalleUnReserved(nom);
+
+    }
+    public void processConsoleActionDeleteSalle(String nom,Boolean available) {
+
+            sallesDao.deleteSalle(nom);
+
 
     }
     @Override

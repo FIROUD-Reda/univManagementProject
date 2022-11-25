@@ -129,8 +129,6 @@ public class Amphis implements Serializable {
 
     }
     public void processConsoleActionMakeReservation(String nom,Boolean available) {
-        System.out.println("hiiiii reda");
-        System.out.println("salam reda "+nom+available);
         if(available)
         amphisDAO.makeAmphiReserved(nom);
         else

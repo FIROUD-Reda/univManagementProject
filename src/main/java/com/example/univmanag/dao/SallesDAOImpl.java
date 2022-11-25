@@ -1,21 +1,30 @@
 package com.example.univmanag.dao;
 
+import com.example.univmanag.beans.Departement;
+import com.example.univmanag.beans.Salle;
 import com.example.univmanag.beans.Salles;
 import com.example.univmanag.util.DataConnect;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Local(SallesDao.class)
 @Stateless
-public class SallesDAOImpl implements  SallesDao {
-    public  List<Salles> getSalles(String show) {
+public class SallesDAOImpl implements SallesDao {
+    @PersistenceContext(unitName = "GestionClients")
+    private EntityManager em;
+
+    public List<Salles> getSalles(String show) {
         Connection con = null;
         PreparedStatement ps = null;
         List<Salles> sallesList = new ArrayList<>();
@@ -25,21 +34,22 @@ public class SallesDAOImpl implements  SallesDao {
             assert con != null;
             if (show.equals("all"))
                 ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles");
-            else if (show.equals("available")){
+            else if (show.equals("available")) {
                 ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles where available=?");
-                ps.setBoolean(1, true);}
-            else if (show.equals("taken")){
+                ps.setBoolean(1, true);
+            } else if (show.equals("taken")) {
                 ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles where available=?");
-                ps.setBoolean(1, false);}
+                ps.setBoolean(1, false);
+            }
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String nom = rs.getString("nom");
                 int capacite = rs.getInt("capacite");
-                boolean available=rs.getBoolean("available");
-                String image=rs.getString("image");
-                String departement=rs.getString("departement");
+                boolean available = rs.getBoolean("available");
+                String image = rs.getString("image");
+                String departement = rs.getString("departement");
                 //Assuming you have a user object
-                Salles salles = new Salles(nom,capacite,available,image,departement);
+                Salles salles = new Salles(nom, capacite, available, image, departement);
 
                 sallesList.add(salles);
             }
@@ -54,6 +64,11 @@ public class SallesDAOImpl implements  SallesDao {
         }
         System.out.println(sallesList);
         return sallesList;
+    }
+
+    @Override
+    public List<Salle> getAllSalles(String show) {
+        return null;
     }
 
     @Override
@@ -94,27 +109,73 @@ public class SallesDAOImpl implements  SallesDao {
         }
     }
 
-    public  boolean addSalle(int i, String nom, int capacite, String departement, String s) {
+    @Override
+    public void deleteSalle(String nom) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Salles(id,nom,capacite,available,departement,image) values (?,?,?,?,?,?)");
-            ps.setInt(1, i);
-            ps.setString(2, nom);
-            ps.setInt(3, capacite);
-            ps.setBoolean(4, false);
-            ps.setString(5, departement);
-            ps.setString(6, s);
+            ps = con.prepareStatement("delete from Salles where nom=?");
+            ps.setString(1, nom);
             ps.executeUpdate();
-
         } catch (SQLException ex) {
             System.out.println("Login error -->" + ex.getMessage());
-            return false;
+
         } finally {
             DataConnect.close(con);
         }
+    }
+
+    @Override
+    public void reserveSalle(String nom, String date1, String date2) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("update Salles set available=? ,datedebut=? , datefin=? where nom=?");
+            ps.setBoolean(1, false);
+            ps.setString(1, date1);
+            ps.setString(2, date2);
+            ps.setString(3, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
+
+    public boolean addSalle(int i, String nom, int capacite, String departement, String s) {
+        Departement departement1=new Departement(1L, departement);
+        em.persist(departement1);
+        Salle salle = new Salle(1L, nom, "date", "date", capacite, false, s,departement1);
+
+        em.persist(salle);
+//        Connection con = null;
+//        PreparedStatement ps = null;
+//        try {
+//            con = DataConnect.getConnection();
+//            assert con != null;
+//            ps = con.prepareStatement("INSERT INTO Salles(id,nom,capacite,available,departement,image,datedebut,datefin) values (?,?,?,?,?,?,?,?)");
+//            ps.setInt(1, i);
+//            ps.setString(2, nom);
+//            ps.setInt(3, capacite);
+//            ps.setBoolean(4, false);
+//            ps.setString(5, departement);
+//            ps.setString(6, s);
+//            ps.setString(7, "date");
+//            ps.setString(8, "date");
+//            ps.executeUpdate();
+//
+//        } catch (SQLException ex) {
+//            System.out.println("Login error -->" + ex.getMessage());
+//            return false;
+//        } finally {
+//            DataConnect.close(con);
+//        }
         return true;
     }
 }

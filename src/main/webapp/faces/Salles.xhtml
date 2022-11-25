@@ -70,8 +70,10 @@
                         </div>
                         <div class="card-action">
                            <h:form>
-                              <h:commandButton class="btn btn-primary btn mb-1" value="#{salle.available?'reservé':'annuller'}"
+                              <h:commandButton class="#{salle.available?'btn btn-success btn mb-1 ml-1':'btn btn-secondary btn mb-1 ml-1'}" value="#{salle.available?'reservé':'annuller'}"
                                                action="#{salles.processConsoleActionMakeReservation(salle.nom,salle.available)}"/>
+                              <h:commandButton class="#{salle.available?'btn btn-warning btn mb-1 ml-1':'btn btn-danger btn mb-1 ml-1'}" value="#{salle.available?'supprimer':'vous devez pas supprimez une salle réserve'}"
+                                               action="#{salles.processConsoleActionDeleteSalle(salle.nom,salle.available)}"/>
                            </h:form>
                         </div>
                      </div>
