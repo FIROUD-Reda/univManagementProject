@@ -26,9 +26,18 @@ public class Login implements Serializable {
     private String lastName;
     private String university;
     private String faculty;
+    private String role;
 
     @EJB
-    private LoginDao loginService ;
+    private LoginDao loginService;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getFaculty() {
         return faculty;
@@ -93,6 +102,8 @@ public class Login implements Serializable {
             System.out.println(user + pwd);
             HttpSession session = SessionUtils.getSession();
             session.setAttribute("username", user);
+            System.out.println("hii reda");
+            System.out.println(session.getAttribute("role"));
             return "admin";
         } else {
             FacesContext.getCurrentInstance().addMessage(
@@ -108,8 +119,8 @@ public class Login implements Serializable {
         boolean valid = loginService.verifyExistence(user);
         if (valid) {
             System.out.println(user);
-            boolean registred = loginService.persist(user, pwd, firstName, lastName, university, faculty);
-            if(registred)
+            boolean registred = loginService.persist(user, pwd, firstName, lastName, university, faculty, false);
+            if (registred)
                 return "login";
             else
                 return "register";

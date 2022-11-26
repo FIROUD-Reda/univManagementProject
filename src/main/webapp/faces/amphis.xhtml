@@ -14,75 +14,147 @@
     <link rel="stylesheet" href="../WEB-INF/lib/register.css"/>
 </h:head>
 <h:body style="background-color:#{amphis.theme};">
-    <f:view>
-        <div>
-            <div class="text-center container py-5">
+    <c:choose>
+        <c:when test="#{session.getAttribute('role')=='user'}">
+            <f:view>
+                <div>
+                    <div class="text-center container py-5">
 
 
-                <h4 class="mt-4 mb-5" style="color:#{amphis.text};"><strong>Amphis </strong></h4>
-                <h:form>
-                    <h:commandButton style="position: absolute ;
+                        <h4 class="mt-4 mb-5" style="color:#{amphis.text};"><strong>Amphis </strong></h4>
+                        <h:form>
+                            <h:commandButton style="position: absolute ;
             left: 180px;
             top: 100px;
             " class="btn btn-primary btn mb-1" value="Disponibles"
-                                     actionListener="#{amphis.processConsoleActionDisponible}"/>
-                    <h:commandButton style="position: absolute ;
+                                             actionListener="#{amphis.processConsoleActionDisponible}"/>
+                            <h:commandButton style="position: absolute ;
             left: 300px;
             top: 100px;" class="btn btn-primary btn mb-1" value="Réservés"
-                                     actionListener="#{amphis.processConsoleActionReserve}"/>
-                    <h:commandButton style="position: absolute ;
+                                             actionListener="#{amphis.processConsoleActionReserve}"/>
+                            <h:commandButton style="position: absolute ;
             left: 395px;
             top: 100px;" class="btn btn-primary btn mb-1" value="Tous"
-                                     actionListener="#{amphis.processConsoleActionAll}"/>
-                    <h:commandButton style="position: absolute ;
+                                             actionListener="#{amphis.processConsoleActionAll}"/>
+                            <h:commandButton style="position: absolute ;
             left: 465px;
             top: 100px;" class="btn btn-primary btn mb-1" value="Theme"
-                                     actionListener="#{amphis.processConsoleActionTheme}"/>
+                                             actionListener="#{amphis.processConsoleActionTheme}"/>
 
-                </h:form>
-                <div class="row">
-                    <c:forEach var="amphi" items="#{amphis.getAmphis()}">
-                        <div class="col-lg-4 col-md-12 mb-4">
-                            <div class="card" style="background-color:#{amphis.theme};">
-                                <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
-                                    <img src="#{amphi.image}" class="w-100" height="250" alt="image amphi"/>
-                                    <a href="#!">
-                                        <div class="mask">
-                                            <div class="d-flex justify-content-start align-items-end h-100">
-                                                <h5><span
-                                                        class="#{amphi.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{amphi.available?"available":"non available"}</span>
-                                                </h5>
-                                            </div>
+                        </h:form>
+                        <div class="row">
+                            <c:forEach var="amphi" items="#{amphis.getAmphis()}">
+                                <div class="col-lg-4 col-md-12 mb-4">
+                                    <div class="card" style="background-color:#{amphis.theme};">
+                                        <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
+                                            <img src="#{amphi.image}" class="w-100" height="250" alt="image amphi"/>
+                                            <a href="#!">
+                                                <div class="mask">
+                                                    <div class="d-flex justify-content-start align-items-end h-100">
+                                                        <h5><span
+                                                                class="#{amphi.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{amphi.available?"available":"non available"}</span>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+
+                                            </a>
                                         </div>
+                                        <div class="card-body">
+                                            <a href="" class="text-reset">
+                                                <h5 class="card-title mb-3" style="color:#{amphis.text};">#{amphi.nom}</h5>
+                                            </a>
+                                            <a href="" class="text-reset">
+                                                <p style="color:#{amphis.text};">Capacite:#{amphi.capacite}</p>
+                                            </a>
+                                            <h6 class="mb-3"></h6>
+                                        </div>
+                                        <div class="card-action">
+                                            <h:form>
+                                                <h:commandButton class="btn btn-primary btn mb-1" value="#{amphi.available?'reservé':'annuller'}"
+                                                                 action="#{amphis.processConsoleActionMakeReservation(amphi.nom,amphi.available)}"/>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    </a>
-                                </div>
-                                <div class="card-body">
-                                    <a href="" class="text-reset">
-                                        <h5 class="card-title mb-3" style="color:#{amphis.text};">#{amphi.nom}</h5>
-                                    </a>
-                                    <a href="" class="text-reset">
-                                        <p style="color:#{amphis.text};">Capacite:#{amphi.capacite}</p>
-                                    </a>
-                                    <h6 class="mb-3"></h6>
-                                </div>
-                                <div class="card-action">
-                                    <h:form>
-                                    <h:commandButton class="btn btn-primary btn mb-1" value="#{amphi.available?'reservé':'annuller'}"
-                                                     action="#{amphis.processConsoleActionMakeReservation(amphi.nom,amphi.available)}"/>
-                                    </h:form>
-                                </div>
-                            </div>
+                            </c:forEach>
                         </div>
-
-                    </c:forEach>
-                    <h:form>
-                        <h:commandLink class="btn btn-success fixed-bottom" action="#{login.reroute('addAmphi')}"
-                                       value="Ajouter Amphi"/>
-                    </h:form>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </f:view>
+            </f:view>
+        </c:when>
+        <c:otherwise>
+            <f:view>
+                <div>
+                    <div class="text-center container py-5">
+
+
+                        <h4 class="mt-4 mb-5" style="color:#{amphis.text};"><strong>Amphis </strong></h4>
+                        <h:form>
+                            <h:commandButton style="position: absolute ;
+            left: 180px;
+            top: 100px;
+            " class="btn btn-primary btn mb-1" value="Disponibles"
+                                             actionListener="#{amphis.processConsoleActionDisponible}"/>
+                            <h:commandButton style="position: absolute ;
+            left: 300px;
+            top: 100px;" class="btn btn-primary btn mb-1" value="Réservés"
+                                             actionListener="#{amphis.processConsoleActionReserve}"/>
+                            <h:commandButton style="position: absolute ;
+            left: 395px;
+            top: 100px;" class="btn btn-primary btn mb-1" value="Tous"
+                                             actionListener="#{amphis.processConsoleActionAll}"/>
+                            <h:commandButton style="position: absolute ;
+            left: 465px;
+            top: 100px;" class="btn btn-primary btn mb-1" value="Theme"
+                                             actionListener="#{amphis.processConsoleActionTheme}"/>
+
+                        </h:form>
+                        <div class="row">
+                            <c:forEach var="amphi" items="#{amphis.getAmphis()}">
+                                <div class="col-lg-4 col-md-12 mb-4">
+                                    <div class="card" style="background-color:#{amphis.theme};">
+                                        <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
+                                            <img src="#{amphi.image}" class="w-100" height="250" alt="image amphi"/>
+                                            <a href="#!">
+                                                <div class="mask">
+                                                    <div class="d-flex justify-content-start align-items-end h-100">
+                                                        <h5><span
+                                                                class="#{amphi.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{amphi.available?"available":"non available"}</span>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+
+                                            </a>
+                                        </div>
+                                        <div class="card-body">
+                                            <a href="" class="text-reset">
+                                                <h5 class="card-title mb-3" style="color:#{amphis.text};">#{amphi.nom}</h5>
+                                            </a>
+                                            <a href="" class="text-reset">
+                                                <p style="color:#{amphis.text};">Capacite:#{amphi.capacite}</p>
+                                            </a>
+                                            <h6 class="mb-3"></h6>
+                                        </div>
+                                        <div class="card-action">
+                                            <h:form>
+                                                <h:commandButton class="btn btn-primary btn mb-1" value="#{amphi.available?'reservé':'annuller'}"
+                                                                 action="#{amphis.processConsoleActionMakeReservation(amphi.nom,amphi.available)}"/>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </c:forEach>
+                            <h:form>
+                                <h:commandLink class="btn btn-success fixed-bottom" action="#{login.reroute('addAmphi')}"
+                                               value="Ajouter Amphi"/>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </f:view>
+        </c:otherwise>
+    </c:choose>
 </h:body>
 </html>

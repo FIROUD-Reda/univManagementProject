@@ -10,28 +10,28 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 
 <h:head>
     <title>Welcome</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"/>
 </h:head>
 
 <h:body>
-
-    <div class="col-12" style="
-    background-image: url('../ressources/images/library.jpg');
+    <c:choose>
+        <c:when test="#{session.getAttribute('role')=='user'}">
+            <div class="col-12" style="
+    background-image: url('../ressources/images/libuser.jpg');
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-  "
-    >
+  ">
 
-<h:form>
-            <h:commandButton class="btn"
-                             style="background:  rgba(0, 0, 0, 0.6);
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
             width: 250px;
             height: 250px;
             color: white;
@@ -40,11 +40,11 @@
             border-color: transparent;
             margin: 7px;
             box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;}"
-                             action="#{login.reroute('ressources')}" value="Gestion des ressources"/>
-</h:form>
-            <h:form>
-            <h:commandButton class="btn"
-                             style="background:  rgba(0, 0, 0, 0.6);
+                                     action="#{login.reroute('ressources')}" value="Demande des ressources"/>
+                </h:form>
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
             width: 250px;
             height: 250px;
             color: white;
@@ -54,13 +54,13 @@
             border-color: transparent;
             box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
             "
-                             action="#{login.reroute('amphis')}" value="Gestion des amphis"/>
-            </h:form>
+                                     action="#{login.reroute('amphis')}" value="Demande des amphis"/>
+                </h:form>
 
 
-            <h:form>
-            <h:commandButton class="btn"
-                             style="background:  rgba(0, 0, 0, 0.6);
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
                 margin: 7px;
             width: 250px;
             height: 250px;
@@ -70,11 +70,11 @@
             border-color: transparent;
             box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
 
-                             action="#{login.reroute('Salles')}" value="Gestion des salles"/>
-            </h:form>
-            <h:form>
-            <h:commandButton class="btn"
-                             style="background:  rgba(0, 0, 0, 0.6);
+                                     action="#{login.reroute('Salles')}" value="Demande des salles"/>
+                </h:form>
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
                 margin: 7px;
             width: 250px;
             height: 250px;
@@ -83,10 +83,81 @@
             font-size: 18px ;
             border-color: transparent;
             box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
-                             action="#{login.reroute('Professors')}" value="Gestion des professeurs"/>
-            </h:form>
+                                     action="#{login.reroute('Professors')}" value="Demande des professeurs"/>
+                </h:form>
 
-    </div>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="col-12" style="
+    background-image: url('../ressources/images/library.jpg');
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  "
+            >
+
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
+            width: 250px;
+            height: 250px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px ;
+            border-color: transparent;
+            margin: 7px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;}"
+                                     action="#{login.reroute('ressources')}" value="Gestion des ressources"/>
+                </h:form>
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
+            width: 250px;
+            height: 250px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px ;
+            margin: 7px;
+            border-color: transparent;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+            "
+                                     action="#{login.reroute('amphis')}" value="Gestion des amphis"/>
+                </h:form>
+
+
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
+                margin: 7px;
+            width: 250px;
+            height: 250px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px ;
+            border-color: transparent;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
+
+                                     action="#{login.reroute('Salles')}" value="Gestion des salles"/>
+                </h:form>
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
+                margin: 7px;
+            width: 250px;
+            height: 250px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px ;
+            border-color: transparent;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
+                                     action="#{login.reroute('Professors')}" value="Gestion des professeurs"/>
+                </h:form>
+
+            </div>
+        </c:otherwise>
+    </c:choose>
 
 
 </h:body>

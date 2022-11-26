@@ -14,59 +14,117 @@
    <link rel="stylesheet" href="../WEB-INF/lib/register.css" />
 </h:head>
 <h:body>
-   <f:view>
-      <div style="background-color: #eee;">
-         <div class="text-center container py-5">
+   <c:choose>
+      <c:when test="#{session.getAttribute('role')=='user'}">
+         <f:view>
+            <div style="background-color: #eee;">
+               <div class="text-center container py-5">
 
-            <h:form>
-               <h:commandButton style="position: absolute ;
+                  <h:form>
+                     <h:commandButton style="position: absolute ;
             left: 50px;
             top: 100px;
             " class="btn btn-primary btn mb-1" value="Disponibles" actionListener="#{amphis.processConsoleAction}" />
-               <h:commandButton style="position: absolute ;
+                     <h:commandButton style="position: absolute ;
             left: 170px;
             top: 100px;" class="btn btn-primary btn mb-1" value="Réservés" actionListener="#{amphis.processConsoleAction}" />
-            </h:form>
+                  </h:form>
 
-            <h4 class="mt-4 mb-5"><strong>Professors</strong></h4>
+                  <h4 class="mt-4 mb-5"><strong>Professors</strong></h4>
 
-            <div class="row">
-               <c:forEach var="professor" items="#{professors.getProfessors()}" >
-                  <div class="col-lg-4 col-md-12 mb-4">
-                     <div class="card" >
-                        <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
-                           <img src="#{professor.image}" class="w-100" height="250" alt="image amphi"/>
-                           <a href="#!">
-                              <div class="mask">
-                                 <div class="d-flex justify-content-start align-items-end h-100">
-                                    <h5><span class="#{professor.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{professor.available?"available":"non available"}</span></h5>
-                                 </div>
+                  <div class="row">
+                     <c:forEach var="professor" items="#{professors.getProfessors()}" >
+                        <div class="col-lg-4 col-md-12 mb-4">
+                           <div class="card" >
+                              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
+                                 <img src="#{professor.image}" class="w-100" height="250" alt="image amphi"/>
+                                 <a href="#!">
+                                    <div class="mask">
+                                       <div class="d-flex justify-content-start align-items-end h-100">
+                                          <h5><span class="#{professor.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{professor.available?"available":"non available"}</span></h5>
+                                       </div>
+                                    </div>
+
+                                 </a>
                               </div>
+                              <div class="card-body">
+                                 <a href="" class="text-reset">
+                                    <h5 class="card-title mb-3">#{professor.nom}</h5>
+                                 </a>
+                                 <a href="" class="text-reset">
+                                    <p>Departement:#{professor.departement}</p>
+                                 </a>
+                                 <a href="" class="text-reset">
+                                    <p>Sex:#{professor.sex}</p>
+                                 </a>
+                                 <h6 class="mb-3"> </h6>
+                              </div>
+                           </div>
+                        </div>
 
-                           </a>
-                        </div>
-                        <div class="card-body">
-                           <a href="" class="text-reset">
-                              <h5 class="card-title mb-3">#{professor.nom}</h5>
-                           </a>
-                           <a href="" class="text-reset">
-                              <p>Departement:#{professor.departement}</p>
-                           </a>
-                           <a href="" class="text-reset">
-                              <p>Sex:#{professor.sex}</p>
-                           </a>
-                           <h6 class="mb-3"> </h6>
-                        </div>
-                     </div>
+                     </c:forEach>
                   </div>
-
-               </c:forEach>
-               <h:form>
-                  <h:commandLink  class="btn btn-success fixed-bottom" action="#{login.reroute('addProfessor')}" value="Ajouter Professeur"/>
-               </h:form>
+               </div>
             </div>
-         </div>
-      </div>
-   </f:view>
+         </f:view>
+      </c:when>
+      <c:otherwise>
+         <f:view>
+            <div style="background-color: #eee;">
+               <div class="text-center container py-5">
+
+                  <h:form>
+                     <h:commandButton style="position: absolute ;
+            left: 50px;
+            top: 100px;
+            " class="btn btn-primary btn mb-1" value="Disponibles" actionListener="#{amphis.processConsoleAction}" />
+                     <h:commandButton style="position: absolute ;
+            left: 170px;
+            top: 100px;" class="btn btn-primary btn mb-1" value="Réservés" actionListener="#{amphis.processConsoleAction}" />
+                  </h:form>
+
+                  <h4 class="mt-4 mb-5"><strong>Professors</strong></h4>
+
+                  <div class="row">
+                     <c:forEach var="professor" items="#{professors.getProfessors()}" >
+                        <div class="col-lg-4 col-md-12 mb-4">
+                           <div class="card" >
+                              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
+                                 <img src="#{professor.image}" class="w-100" height="250" alt="image amphi"/>
+                                 <a href="#!">
+                                    <div class="mask">
+                                       <div class="d-flex justify-content-start align-items-end h-100">
+                                          <h5><span class="#{professor.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{professor.available?"available":"non available"}</span></h5>
+                                       </div>
+                                    </div>
+
+                                 </a>
+                              </div>
+                              <div class="card-body">
+                                 <a href="" class="text-reset">
+                                    <h5 class="card-title mb-3">#{professor.nom}</h5>
+                                 </a>
+                                 <a href="" class="text-reset">
+                                    <p>Departement:#{professor.departement}</p>
+                                 </a>
+                                 <a href="" class="text-reset">
+                                    <p>Sex:#{professor.sex}</p>
+                                 </a>
+                                 <h6 class="mb-3"> </h6>
+                              </div>
+                           </div>
+                        </div>
+
+                     </c:forEach>
+                     <h:form>
+                        <h:commandLink  class="btn btn-success fixed-bottom" action="#{login.reroute('addProfessor')}" value="Ajouter Professeur"/>
+                     </h:form>
+                  </div>
+               </div>
+            </div>
+         </f:view>
+      </c:otherwise>
+   </c:choose>
+
 </h:body>
 </html>

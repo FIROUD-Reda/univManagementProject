@@ -1,8 +1,11 @@
 package com.example.univmanag.dao;
 
+import com.example.univmanag.beans.SessionUtils;
 import com.example.univmanag.util.DataConnect;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
+import jakarta.servlet.http.HttpSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,23 +15,28 @@ import java.sql.SQLException;
 
 @Local(LoginDao.class)
 @Stateless
-public class LoginDAOImpl implements  LoginDao {
+public class LoginDAOImpl implements LoginDao {
 
-    public  boolean validate(String user, String password) {
-        System.out.println("calling validate"+user+password);
+    public boolean validate(String user, String password) {
+        System.out.println("calling validate" + user + password);
         Connection con = null;
         PreparedStatement ps = null;
 
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select uname, password from Users where uname = ? and password = ?");
+            ps = con.prepareStatement("Select uname, password,role from Users where uname = ? and password = ?");
             ps.setString(1, user);
             ps.setString(2, password);
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                HttpSession session = SessionUtils.getSession();
+                if (rs.getBoolean("role") == true)
+                    session.setAttribute("role", "admin");
+                else
+                    session.setAttribute("role", "user");
                 //result found, means valid inputs
                 return true;
             }
@@ -41,7 +49,7 @@ public class LoginDAOImpl implements  LoginDao {
         return false;
     }
 
-    public  boolean verifyExistence(String user) {
+    public boolean verifyExistence(String user) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
@@ -65,20 +73,21 @@ public class LoginDAOImpl implements  LoginDao {
         return true;
     }
 
-    public boolean persist(String user, String pwd, String firstName, String lastName, String university, String faculty) {
+    public boolean persist(String user, String pwd, String firstName, String lastName, String university, String faculty, Boolean role) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Users(uid,uname,password,firstName,lastName,university,faculty) values (?,?,?,?,?,?,?)");
-            ps.setString(1, String.valueOf((int)(Math.random()*900)+25));
+            ps = con.prepareStatement("INSERT INTO Users(uid,uname,password,firstName,lastName,university,faculty,role) values (?,?,?,?,?,?,?,?)");
+            ps.setString(1, String.valueOf((int) (Math.random() * 900) + 25));
             ps.setString(2, user);
             ps.setString(3, pwd);
             ps.setString(4, firstName);
             ps.setString(5, lastName);
             ps.setString(6, university);
             ps.setString(7, faculty);
+            ps.setBoolean(8, role);
             ps.executeUpdate();
 
         } catch (SQLException ex) {
