@@ -21,8 +21,6 @@ import java.util.List;
 @Local(SallesDao.class)
 @Stateless
 public class SallesDAOImpl implements SallesDao {
-    @PersistenceContext(unitName = "GestionClients")
-    private EntityManager em;
 
     public List<Salles> getSalles(String show) {
         Connection con = null;
@@ -149,33 +147,29 @@ public class SallesDAOImpl implements SallesDao {
     }
 
     public boolean addSalle(int i, String nom, int capacite, String departement, String s) {
-        Departement departement1=new Departement(1L, departement);
-        em.persist(departement1);
-        Salle salle = new Salle(1L, nom, "date", "date", capacite, false, s,departement1);
 
-        em.persist(salle);
-//        Connection con = null;
-//        PreparedStatement ps = null;
-//        try {
-//            con = DataConnect.getConnection();
-//            assert con != null;
-//            ps = con.prepareStatement("INSERT INTO Salles(id,nom,capacite,available,departement,image,datedebut,datefin) values (?,?,?,?,?,?,?,?)");
-//            ps.setInt(1, i);
-//            ps.setString(2, nom);
-//            ps.setInt(3, capacite);
-//            ps.setBoolean(4, false);
-//            ps.setString(5, departement);
-//            ps.setString(6, s);
-//            ps.setString(7, "date");
-//            ps.setString(8, "date");
-//            ps.executeUpdate();
-//
-//        } catch (SQLException ex) {
-//            System.out.println("Login error -->" + ex.getMessage());
-//            return false;
-//        } finally {
-//            DataConnect.close(con);
-//        }
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("INSERT INTO Salles(id,nom,capacite,available,departement,image,datedebut,datefin) values (?,?,?,?,?,?,?,?)");
+            ps.setInt(1, i);
+            ps.setString(2, nom);
+            ps.setInt(3, capacite);
+            ps.setBoolean(4, false);
+            ps.setString(5, departement);
+            ps.setString(6, s);
+            ps.setString(7, "date");
+            ps.setString(8, "date");
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+            return false;
+        } finally {
+            DataConnect.close(con);
+        }
         return true;
     }
 }
