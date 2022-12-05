@@ -31,12 +31,12 @@ public class SallesDAOImpl implements SallesDao {
             con = DataConnect.getConnection();
             assert con != null;
             if (show.equals("all"))
-                ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles");
+                ps = con.prepareStatement("Select nom, capacite, available,image,departement from salles");
             else if (show.equals("available")) {
-                ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles where available=?");
+                ps = con.prepareStatement("Select nom, capacite, available,image,departement from salles where available=?");
                 ps.setBoolean(1, true);
             } else if (show.equals("taken")) {
-                ps = con.prepareStatement("Select nom, capacite, available,image,departement from Salles where available=?");
+                ps = con.prepareStatement("Select nom, capacite, available,image,departement from salles where available=?");
                 ps.setBoolean(1, false);
             }
             ResultSet rs = ps.executeQuery();
@@ -76,7 +76,7 @@ public class SallesDAOImpl implements SallesDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("update Salles set available=? where nom=?");
+            ps = con.prepareStatement("update salles set available=? where nom=?");
             ps.setBoolean(1, true);
             ps.setString(2, nom);
             ps.executeUpdate();
@@ -95,7 +95,7 @@ public class SallesDAOImpl implements SallesDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("update Salles set available=? where nom=?");
+            ps = con.prepareStatement("update salles set available=? where nom=?");
             ps.setBoolean(1, false);
             ps.setString(2, nom);
             ps.executeUpdate();
@@ -114,7 +114,7 @@ public class SallesDAOImpl implements SallesDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("delete from Salles where nom=?");
+            ps = con.prepareStatement("delete from salles where nom=?");
             ps.setString(1, nom);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -132,7 +132,7 @@ public class SallesDAOImpl implements SallesDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("update Salles set available=? ,datedebut=? , datefin=? where nom=?");
+            ps = con.prepareStatement("update salles set available=? ,datedebut=? , datefin=? where nom=?");
             ps.setBoolean(1, false);
             ps.setString(1, date1);
             ps.setString(2, date2);
@@ -153,7 +153,7 @@ public class SallesDAOImpl implements SallesDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Salles(id,nom,capacite,available,departement,image,datedebut,datefin) values (?,?,?,?,?,?,?,?)");
+            ps = con.prepareStatement("INSERT INTO salles(id,nom,capacite,available,departement,image,datedebut,datefin) values (?,?,?,?,?,?,?,?)");
             ps.setInt(1, i);
             ps.setString(2, nom);
             ps.setInt(3, capacite);

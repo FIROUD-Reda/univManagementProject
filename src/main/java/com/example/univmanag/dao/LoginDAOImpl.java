@@ -25,7 +25,7 @@ public class LoginDAOImpl implements LoginDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select uname, password,role from Users where uname = ? and password = ?");
+            ps = con.prepareStatement("Select uname, password,role from users where uname = ? and password = ?");
             ps.setString(1, user);
             ps.setString(2, password);
 
@@ -55,7 +55,7 @@ public class LoginDAOImpl implements LoginDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select uname from Users where uname = ?");
+            ps = con.prepareStatement("Select uname from users where uname = ?");
             ps.setString(1, user);
 
             ResultSet rs = ps.executeQuery();
@@ -79,7 +79,7 @@ public class LoginDAOImpl implements LoginDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Users(uid,uname,password,firstName,lastName,university,faculty,role) values (?,?,?,?,?,?,?,?)");
+            ps = con.prepareStatement("INSERT INTO users(uid,uname,password,firstName,lastName,university,faculty,role) values (?,?,?,?,?,?,?,?)");
             ps.setString(1, String.valueOf((int) (Math.random() * 900) + 25));
             ps.setString(2, user);
             ps.setString(3, pwd);

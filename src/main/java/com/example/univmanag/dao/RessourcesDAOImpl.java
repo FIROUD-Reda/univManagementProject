@@ -23,7 +23,7 @@ public class RessourcesDAOImpl implements  ResourcesDao {
 
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select nom,type,available,image,departement from Ressources");
+            ps = con.prepareStatement("Select nom,type,available,image,departement from ressources");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String nom = rs.getString("nom");
@@ -55,7 +55,7 @@ public class RessourcesDAOImpl implements  ResourcesDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Ressources(id,nom,type,available,departement,image) values (?,?,?,?,?,?)");
+            ps = con.prepareStatement("INSERT INTO ressources(id,nom,type,available,departement,image) values (?,?,?,?,?,?)");
             ps.setInt(1, i);
             ps.setString(2, nom);
             ps.setString(3, type);

@@ -24,12 +24,12 @@ public class AmphisDAOImpl implements AmphiDao {
             con = DataConnect.getConnection();
             assert con != null;
             if (show.equals("all"))
-                ps = con.prepareStatement("Select nom, capacite, available,image from Amphis");
+                ps = con.prepareStatement("Select nom, capacite, available,image from amphis");
             else if (show.equals("available")){
-                ps = con.prepareStatement("Select nom, capacite, available,image from Amphis where available=?");
+                ps = con.prepareStatement("Select nom, capacite, available,image from amphis where available=?");
             ps.setBoolean(1, true);}
             else if (show.equals("taken")){
-                ps = con.prepareStatement("Select nom, capacite, available,image from Amphis where available=?");
+                ps = con.prepareStatement("Select nom, capacite, available,image from amphis where available=?");
             ps.setBoolean(1, false);}
 
             ResultSet rs = ps.executeQuery();
@@ -60,7 +60,7 @@ public class AmphisDAOImpl implements AmphiDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("update Amphis set available=? where nom=?");
+            ps = con.prepareStatement("update amphis set available=? where nom=?");
             ps.setBoolean(1, false);
             ps.setString(2, nom);
             ps.executeUpdate();
@@ -78,7 +78,7 @@ public class AmphisDAOImpl implements AmphiDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("update Amphis set available=? where nom=?");
+            ps = con.prepareStatement("update amphis set available=? where nom=?");
             ps.setBoolean(1, true);
             ps.setString(2, nom);
             ps.executeUpdate();
@@ -95,7 +95,7 @@ public class AmphisDAOImpl implements AmphiDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("INSERT INTO Amphis(id,nom,capacite,available,image) values (?,?,?,?,?)");
+            ps = con.prepareStatement("INSERT INTO amphis(id,nom,capacite,available,image) values (?,?,?,?,?)");
             ps.setInt(1, i);
             ps.setString(2, nom);
             ps.setInt(3, capacite);

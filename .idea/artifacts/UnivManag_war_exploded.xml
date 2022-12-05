@@ -15,6 +15,21 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: jakarta.platform:jakarta.jakartaee-api:9.1.0" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1" />
+          <element id="library" level="project" name="Maven: org.apache.qpid:qpid-jms-client:0.58.0" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.30" />
+          <element id="library" level="project" name="Maven: org.apache.geronimo.specs:geronimo-jms_2.0_spec:1.0-alpha-2" />
+          <element id="library" level="project" name="Maven: org.apache.qpid:proton-j:0.33.8" />
+          <element id="library" level="project" name="Maven: io.netty:netty-buffer:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-common:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-handler:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-resolver:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport-native-epoll:linux-x86_64:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport-native-unix-common:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-transport-native-kqueue:osx-x86_64:4.1.63.Final" />
+          <element id="library" level="project" name="Maven: io.netty:netty-codec-http:4.1.63.Final" />
         </element>
       </element>
       <element id="directory" name="META-INF">
