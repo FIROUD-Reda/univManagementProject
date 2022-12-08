@@ -134,7 +134,7 @@ public class Salles implements Serializable {
     public List<Salles> getSalles() {
         return sallesDao.getSalles(show);
     }
-    public String reserveSalle(String nom,String datedebut,String datefin) throws ParseException {
+    public String reserveSalle(String nom) throws ParseException {
         sallesDao.reserveSalle(nom,datedebut,datefin);
         return "Salles";
     }

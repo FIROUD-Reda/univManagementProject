@@ -25,7 +25,7 @@ public class LoginDAOImpl implements LoginDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select uname, password,role from users where uname = ? and password = ?");
+            ps = con.prepareStatement("Select uname, password,role,uid from users where uname = ? and password = ?");
             ps.setString(1, user);
             ps.setString(2, password);
 
@@ -33,6 +33,7 @@ public class LoginDAOImpl implements LoginDao {
 
             if (rs.next()) {
                 HttpSession session = SessionUtils.getSession();
+                session.setAttribute("user_id", rs.getInt("uid"));
                 if (rs.getBoolean("role") == true)
                     session.setAttribute("role", "admin");
                 else
