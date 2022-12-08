@@ -40,9 +40,10 @@
                               <label class="form-label" for="type">capacite</label>
                            </div>
                            <div class="form-outline mb-4">
-                              <h:inputFile class="form-control" id="image"  required="true" requiredMessage="Please enter your image " />
+                              <h:inputText id="image" class="form-control "  value="#{amphis.image}"
+                                           required="true" requiredMessage="Please enter your image url " />
                               <h:message for="image" style="color:red" />
-                              <label class="form-label" for="image">Image</label>
+                              <label class="form-label" for="type">Image Url</label>
                            </div>
 
                            <h:commandButton class="btn btn-success btn-lg mb-1" value="Ajouter" action="#{amphis.addAmphi}" />

@@ -109,7 +109,7 @@ public class Amphis implements Serializable {
     }
 
     public String addAmphi() {
-        boolean persisted = amphisDAO.addAmphi((int) (Math.random() * 900) + 25, nom, capacite, available, "https://www.letudiant.fr/uploads/mediatheque/ETU_ETU/7/4/253974-universite-versailles-saint-quentin-uvsq-amphi-licence-1-droit-septembre-2014-camille-stromboni-6-original.jpg");
+        boolean persisted = amphisDAO.addAmphi((int) (Math.random() * 900) + 25, nom, capacite, available, image);
         if (persisted)
             return "amphis";
         else
@@ -126,6 +126,12 @@ public class Amphis implements Serializable {
     }
     public void processConsoleActionAll(ActionEvent event) {
         this.show = "all";
+
+    }
+    public void processConsoleActionDeleteAmphi(String nom,Boolean available) {
+
+        amphisDAO.deleteAmphi(nom);
+
 
     }
     public void processConsoleActionMakeReservation(String nom,Boolean available) {
