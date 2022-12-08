@@ -71,6 +71,25 @@ public class AmphisDAOImpl implements AmphiDao {
             DataConnect.close(con);
         }
     }
+
+    @Override
+    public void deleteAmphi(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("delete from amphis where nom=?");
+            ps.setString(1, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
+
     @Override
     public void makeAmphiUnReserved(String nom) {
         Connection con = null;

@@ -108,7 +108,7 @@ public class Ressources implements Serializable {
     }
 
     public String addRessource() {
-        boolean persisterd=resourcesDao.addRessource((int) (Math.random() * 900) + 25,nom,type,departement,"https://images.samsung.com/is/image/samsung/p6pim/n_africa/ua75au7000uxmv/gallery/n-africa-uhd-au7000-ua75au7000uxmv-395443214?$720_576_PNG$");
+        boolean persisterd=resourcesDao.addRessource((int) (Math.random() * 900) + 25,nom,type,departement,image);
         if(persisterd)
             return "ressources";
         else
@@ -117,5 +117,19 @@ public class Ressources implements Serializable {
 
     public  void processConsoleAction(ActionEvent event){
         System.out.println(event);
+    }
+    public void processConsoleActionMakeReservation(String nom,Boolean available) {
+
+        if(available)
+            resourcesDao.makeResourcesReserved(nom);
+        else
+            resourcesDao.makeResourcesUnReserved(nom);
+
+    }
+    public void processConsoleActionDeleteResources(String nom,Boolean available) {
+
+        resourcesDao.deleteResources(nom);
+
+
     }
 }

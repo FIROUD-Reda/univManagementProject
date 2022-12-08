@@ -11,4 +11,5 @@ public interface AmphiDao {
       List<Amphis> getAmphis(String show) ;
 
     void makeAmphiReserved(String nom);
+    void deleteAmphi(String nom);
 }

@@ -72,4 +72,60 @@ public class RessourcesDAOImpl implements  ResourcesDao {
         }
         return true;
     }
+
+    @Override
+    public void makeResourcesUnReserved(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("update ressources set available=? where nom=?");
+            ps.setBoolean(1, true);
+            ps.setString(2, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
+
+    @Override
+    public void makeResourcesReserved(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("update ressources set available=? where nom=?");
+            ps.setBoolean(1, false);
+            ps.setString(2, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
+
+    @Override
+    public void deleteResources(String nom) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DataConnect.getConnection();
+            assert con != null;
+            ps = con.prepareStatement("delete from ressources where nom=?");
+            ps.setString(1, nom);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("Login error -->" + ex.getMessage());
+
+        } finally {
+            DataConnect.close(con);
+        }
+    }
 }
