@@ -19,12 +19,14 @@ public class Salles implements Serializable {
     private String nom;
     private String datedebut;
     private String datefin;
-    private Long id;
+    private int id;
     private int capacite;
     private boolean available;
     private String image;
     private String departement;
     private String show="all";
+    private Date search_date_debut;
+    private Date search_date_fin;
     @EJB
     private SallesDao sallesDao ;
     public String getDatedebut() {
@@ -71,11 +73,11 @@ public class Salles implements Serializable {
         this.nom = nom;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -111,10 +113,26 @@ public class Salles implements Serializable {
         this.departement = departement;
     }
 
+    public Date getSearch_date_debut() {
+        return search_date_debut;
+    }
+
+    public void setSearch_date_debut(Date search_date_debut) {
+        this.search_date_debut = search_date_debut;
+    }
+
+    public Date getSearch_date_fin() {
+        return search_date_fin;
+    }
+
+    public void setSearch_date_fin(Date search_date_fin) {
+        this.search_date_fin = search_date_fin;
+    }
+
     public Salles() {
     }
 
-    public Salles(String nom, Long id, int capacite, boolean available, String image, String departement) {
+    public Salles(String nom, int id, int capacite, boolean available, String image, String departement) {
         this.nom = nom;
         this.id = id;
         this.capacite = capacite;
@@ -124,7 +142,7 @@ public class Salles implements Serializable {
     }
     public Salles(String nom, int capacite, boolean available, String image, String departement) {
         this.nom = nom;
-        this.id =  (long) (Math.random() * 900) + 25;
+        this.id =  (int) (Math.random() * 900) + 25;
         this.capacite = capacite;
         this.available = available;
         this.image = image;
@@ -132,24 +150,15 @@ public class Salles implements Serializable {
     }
 
     public List<Salles> getSalles() {
-        return sallesDao.getSalles(show);
+        return sallesDao.getSalles(show, search_date_debut, search_date_fin);
     }
     public String reserveSalle(String nom) throws ParseException {
         sallesDao.reserveSalle(nom,datedebut,datefin);
         return "Salles";
     }
-    public void processConsoleActionDisponible(ActionEvent event) {
-        this.show = "available";
+    public void processConsoleActionSearch(ActionEvent event) {
     }
 
-    public void processConsoleActionReserve(ActionEvent event) {
-        this.show = "taken";
-
-    }
-    public void processConsoleActionAll(ActionEvent event) {
-        this.show = "all";
-
-    }
     public void processConsoleActionMakeReservation(String nom,Boolean available) {
         System.out.println("hiiiii reda");
         System.out.println("salam reda "+nom+available);

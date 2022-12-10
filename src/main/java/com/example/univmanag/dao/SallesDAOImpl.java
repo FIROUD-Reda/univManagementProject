@@ -1,20 +1,16 @@
 package com.example.univmanag.dao;
 
-import com.example.univmanag.beans.Departement;
 import com.example.univmanag.beans.Salle;
 import com.example.univmanag.beans.Salles;
 import com.example.univmanag.util.DataConnect;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +18,7 @@ import java.util.List;
 @Stateless
 public class SallesDAOImpl implements SallesDao {
 
-    public List<Salles> getSalles(String show) {
+    public List<Salles> getSalles(String show, Date search_date_debut, Date search_date_fin) {
         Connection con = null;
         PreparedStatement ps = null;
         List<Salles> sallesList = new ArrayList<>();
@@ -31,13 +27,17 @@ public class SallesDAOImpl implements SallesDao {
             con = DataConnect.getConnection();
             assert con != null;
             if (show.equals("all"))
-                ps = con.prepareStatement("Select nom, capacite, available,image,departement from salles");
-            else if (show.equals("available")) {
-                ps = con.prepareStatement("Select nom, capacite, available,image,departement from salles where available=?");
-                ps.setBoolean(1, true);
-            } else if (show.equals("taken")) {
-                ps = con.prepareStatement("Select nom, capacite, available,image,departement from salles where available=?");
-                ps.setBoolean(1, false);
+                ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles");
+            else if (show.equals("taken")) {
+                ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles " +
+                        "where id in (select resource_id from reservations where date_debut = ? and date_fin = ?)");
+                ps.setDate(1,  new java.sql.Date(search_date_debut.getTime()));
+                ps.setDate(2,  new java.sql.Date(search_date_fin.getTime()));
+            } else if (show.equals("available")) {
+                ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles " +
+                        "where id not in (select resource_id from reservations where date_debut = ? and date_fin = ?)");
+                ps.setDate(1,  new java.sql.Date(search_date_debut.getTime()));
+                ps.setDate(2,  new java.sql.Date(search_date_fin.getTime()));
             }
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -46,8 +46,9 @@ public class SallesDAOImpl implements SallesDao {
                 boolean available = rs.getBoolean("available");
                 String image = rs.getString("image");
                 String departement = rs.getString("departement");
+                int id = rs.getInt("id");
                 //Assuming you have a user object
-                Salles salles = new Salles(nom, capacite, available, image, departement);
+                Salles salles = new Salles(nom, id,capacite, available, image, departement);
 
                 sallesList.add(salles);
             }

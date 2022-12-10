@@ -28,8 +28,54 @@ public class Login implements Serializable {
     private String faculty;
     private String role;
 
+    private Boolean loggedIn = false;
     @EJB
     private LoginDao loginService;
+    //validate login
+    public String validateUsernamePassword() {
+        boolean valid = loginService.validate(user, pwd);
+        if (valid) {
+            setLoggedIn(true);
+            System.out.println(user + pwd);
+            HttpSession session = SessionUtils.getSession();
+            session.setAttribute("username", user);
+            System.out.println("hii reda");
+            System.out.println(session.getAttribute("role"));
+            return "admin";
+        } else {
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            "Incorrect Username and Passowrd",
+                            "Please enter correct username and Password"));
+            return "login";
+        }
+    }
+
+    public String register() {
+        boolean valid = loginService.verifyExistence(user);
+        if (valid) {
+            System.out.println(user);
+            boolean registred = loginService.persist(user, pwd, firstName, lastName, university, faculty, false);
+            if (registred)
+                return "login";
+            else
+                return "register";
+        }
+        return "register";
+    }
+
+    //logout event, invalidate session
+    public String logout() {
+        setLoggedIn(false);
+        HttpSession session = SessionUtils.getSession();
+        session.invalidate();
+        return "login";
+    }
+
+    public String reroute(String sthg) {
+        return sthg;
+    }
 
     public String getRole() {
         return role;
@@ -95,48 +141,11 @@ public class Login implements Serializable {
         this.user = user;
     }
 
-    //validate login
-    public String validateUsernamePassword() {
-        boolean valid = loginService.validate(user, pwd);
-        if (valid) {
-            System.out.println(user + pwd);
-            HttpSession session = SessionUtils.getSession();
-            session.setAttribute("username", user);
-            System.out.println("hii reda");
-            System.out.println(session.getAttribute("role"));
-            return "admin";
-        } else {
-            FacesContext.getCurrentInstance().addMessage(
-                    null,
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            "Incorrect Username and Passowrd",
-                            "Please enter correct username and Password"));
-            return "login";
-        }
+    public Boolean getLoggedIn() {
+        return loggedIn;
     }
 
-    public String register() {
-        boolean valid = loginService.verifyExistence(user);
-        if (valid) {
-            System.out.println(user);
-            boolean registred = loginService.persist(user, pwd, firstName, lastName, university, faculty, false);
-            if (registred)
-                return "login";
-            else
-                return "register";
-        }
-        return "register";
+    public void setLoggedIn(Boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
-
-    //logout event, invalidate session
-    public String logout() {
-        HttpSession session = SessionUtils.getSession();
-        session.invalidate();
-        return "login";
-    }
-
-    public String reroute(String sthg) {
-        return sthg;
-    }
-
 }
