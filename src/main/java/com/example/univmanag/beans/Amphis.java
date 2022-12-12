@@ -1,14 +1,14 @@
 package com.example.univmanag.beans;
 
 import com.example.univmanag.dao.AmphiDao;
+import com.example.univmanag.dao.ReservationsDao;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.event.ActionEvent;
 import jakarta.inject.Named;
 
-import jakarta.faces.event.ActionEvent;
-
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Named
@@ -21,7 +21,44 @@ public class Amphis implements Serializable {
     private boolean available;
     private String image;
     private String theme = "#FFFFFF";
-    private String text="#000000";
+    private String text = "#000000";
+
+    private String show = "all";
+    private Date search_date_debut;
+    private Date search_date_fin;
+
+    @EJB
+    private AmphiDao amphisDAO;
+
+    @EJB
+    private ReservationsDao reservationsDao;
+
+    public void processConsoleActionSearch(ActionEvent event) {
+    }
+
+    public String getShow() {
+        return show;
+    }
+
+    public void setShow(String show) {
+        this.show = show;
+    }
+
+    public Date getSearch_date_debut() {
+        return search_date_debut;
+    }
+
+    public void setSearch_date_debut(Date search_date_debut) {
+        this.search_date_debut = search_date_debut;
+    }
+
+    public Date getSearch_date_fin() {
+        return search_date_fin;
+    }
+
+    public void setSearch_date_fin(Date search_date_fin) {
+        this.search_date_fin = search_date_fin;
+    }
 
     public String getText() {
         return text;
@@ -39,8 +76,6 @@ public class Amphis implements Serializable {
         this.theme = theme;
     }
 
-    @EJB
-    private AmphiDao amphisDAO;
 
     public String getImage() {
         return image;
@@ -101,11 +136,10 @@ public class Amphis implements Serializable {
         this.available = available;
     }
 
-    String show = "all";
 
     public List<Amphis> getAmphis() {
         System.out.println("im being called");
-        return amphisDAO.getAmphis(show);
+        return amphisDAO.getAmphis(show, search_date_debut, search_date_fin);
     }
 
     public String addAmphi() {
@@ -124,23 +158,21 @@ public class Amphis implements Serializable {
         this.show = "taken";
 
     }
+
     public void processConsoleActionAll(ActionEvent event) {
         this.show = "all";
 
     }
-    public void processConsoleActionDeleteAmphi(String nom,Boolean available) {
 
-        amphisDAO.deleteAmphi(nom);
+    public void processConsoleActionDeleteAmphi(int id) {
 
-
-    }
-    public void processConsoleActionMakeReservation(String nom,Boolean available) {
-        if(available)
-        amphisDAO.makeAmphiReserved(nom);
+        if (reservationsDao.isReserved(id))
+            return;
         else
-            amphisDAO.makeAmphiUnReserved(nom);
-
+            amphisDAO.deleteAmphi(nom);
     }
+
+
     public void processConsoleActionTheme(ActionEvent event) {
         if (this.theme == "#000000")
             this.theme = "#FFFFFF";

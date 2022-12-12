@@ -64,10 +64,8 @@
     <c:choose>
         <c:when test="#{session.getAttribute('role')=='user'}">
             <f:view>
-                <div>
+                <div style="background-color: #eee;">
                     <div class="text-center container py-5">
-
-
                         <h4 class="mt-4 mb-5" style="color:#{amphis.text};"><strong>Salles</strong></h4>
                         <h:form class="form-inline">
                             <div class="form-check form-check-inline mb-5">
@@ -96,7 +94,7 @@
                             </div>
 
                             <div class="form-check form-check-inline mb-5">
-                                <h:commandButton class="btn btn-primary btn form-check form-check-inline" value="Chercher"
+                                <h:commandButton class="btn btn-primary btn form-check form-check-inline" value="  Chercher"
                                                  actionListener="#{salles.processConsoleActionSearch}"/>
                             </div>
 
@@ -192,46 +190,49 @@
         </c:when>
         <c:otherwise>
             <f:view>
-                <div>
+                <div style="background-color: #eee;">
                     <div class="text-center container py-5">
 
 
                         <h4 class="mt-4 mb-5" style="color:#{amphis.text};"><strong>Salles</strong></h4>
-                        <h:form>
-                            <h:commandButton style="position: absolute ;
-            left: 180px;
-            top: 100px;
-            " class="btn btn-primary btn mb-1" value="Disponibles"
-                                             actionListener="#{salles.processConsoleActionDisponible}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 300px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Réservés"
-                                             actionListener="#{salles.processConsoleActionReserve}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 395px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Tous"
-                                             actionListener="#{salles.processConsoleActionAll}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 465px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Theme"
-                                             actionListener="#{amphis.processConsoleActionTheme}"/>
+                        <h:form class="form-inline">
+                            <div class="form-check form-check-inline mb-5">
+                                <h:selectOneMenu value = "#{salles.show}"  class="select-input">
+                                    <f:selectItem itemValue = "all" itemLabel = "Tous" />
+                                    <f:selectItem itemValue = "taken" itemLabel = "Réservés" />
+                                    <f:selectItem itemValue = "available" itemLabel = "Disponible" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-check form-check-inline mb-5">
+                                <label class="form-check-label" for="message">Date Début:</label>
+                                <h:inputText class="form-check-input" id="search_date_debut" value="#{salles.search_date_debut}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                                <h:message for="search_date_debut">
+                                </h:message>
+                            </div>
+                            <div class="form-check form-check-inline mb-5">
+                                <label class="form-check-label" for="message">Date Fin:</label>
+                                <h:inputText id="search_date_fin" value="#{salles.search_date_fin}"
+                                             class="form-check-input">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                                <h:message for="search_date_fin">
+                                </h:message>
+                            </div>
+
+                            <div class="form-check form-check-inline mb-5">
+                                <h:commandButton class="btn btn-primary btn form-check form-check-inline" value="  Chercher"
+                                                 actionListener="#{salles.processConsoleActionSearch}"/>
+                            </div>
+
                         </h:form>
                         <div class="row">
                             <c:forEach var="salle" items="#{salles.getSalles()}">
                                 <div class="col-lg-4 col-md-12 mb-4">
                                     <div class="card" style="background-color:#{amphis.theme};">
                                         <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
-                                            <img src="#{salle.image}" class="w-100" height="250" alt="image amphi"/>
-                                            <a href="#!">
-                                                <div class="mask">
-                                                    <div class="d-flex justify-content-start align-items-end h-100">
-                                                        <h5><span
-                                                                class="#{salle.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{salle.available?"available":"non available"}</span>
-                                                        </h5>
-                                                    </div>
-                                                </div>
-
-                                            </a>
+                                            <img src="#{salle.image}" class="w-100" height="250" alt="image salle"/>
                                         </div>
                                         <div class="card-body">
                                             <a href="" class="text-reset">
@@ -248,15 +249,11 @@
                                         </div>
                                         <div class="card-action">
                                             <h:form>
-                                                <h:commandButton
-                                                        class="#{salle.available?'btn btn-success btn mb-1 ml-1':'btn btn-secondary btn mb-1 ml-1'}"
-                                                        value="#{salle.available?'reservé':'annuller'}"
-                                                        action="#{salles.processConsoleActionMakeReservation(salle.nom,salle.available)}"/>
-                                                <h:commandButton
-                                                        class="#{salle.available?'btn btn-warning btn mb-1 ml-1':'btn btn-danger btn mb-1 ml-1'}"
-                                                        value="#{salle.available?'supprimer':'vous devez pas supprimez une salle réserve'}"
-                                                        action="#{salles.processConsoleActionDeleteSalle(salle.nom,salle.available)}"/>
+
+                                                <h:commandButton class="btn btn-danger btn mb-1 ml-1" value="Supprimer"
+                                                                 action="#{salles.processConsoleActionDeleteSalle(salle.id)}"/>
                                             </h:form>
+
                                         </div>
                                     </div>
                                 </div>

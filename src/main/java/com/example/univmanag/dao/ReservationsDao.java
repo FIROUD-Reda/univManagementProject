@@ -10,4 +10,6 @@ public interface ReservationsDao {
     public List<Reservation> getReservation(String show);
     public List<Reservation> getAllReservation(String show);
 
+    public Boolean isReserved(int id);
+
 }

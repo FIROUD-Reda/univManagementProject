@@ -1,6 +1,6 @@
 package com.example.univmanag.beans;
 
-import com.example.univmanag.dao.SallesDAOImpl;
+import com.example.univmanag.dao.ReservationsDao;
 import com.example.univmanag.dao.SallesDao;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
@@ -9,7 +9,6 @@ import jakarta.inject.Named;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,11 +23,14 @@ public class Salles implements Serializable {
     private boolean available;
     private String image;
     private String departement;
-    private String show="all";
+    private String show = "all";
     private Date search_date_debut;
     private Date search_date_fin;
     @EJB
-    private SallesDao sallesDao ;
+    private SallesDao sallesDao;
+    @EJB
+    private ReservationsDao reservationsDao;
+
     public String getDatedebut() {
         return datedebut;
     }
@@ -52,9 +54,6 @@ public class Salles implements Serializable {
     public void setShow(String show) {
         this.show = show;
     }
-
-
-
 
 
     public SallesDao getSallesDao() {
@@ -140,9 +139,10 @@ public class Salles implements Serializable {
         this.image = image;
         this.departement = departement;
     }
+
     public Salles(String nom, int capacite, boolean available, String image, String departement) {
         this.nom = nom;
-        this.id =  (int) (Math.random() * 900) + 25;
+        this.id = (int) (Math.random() * 900) + 25;
         this.capacite = capacite;
         this.available = available;
         this.image = image;
@@ -152,28 +152,24 @@ public class Salles implements Serializable {
     public List<Salles> getSalles() {
         return sallesDao.getSalles(show, search_date_debut, search_date_fin);
     }
+
     public String reserveSalle(String nom) throws ParseException {
-        sallesDao.reserveSalle(nom,datedebut,datefin);
+        sallesDao.reserveSalle(nom, datedebut, datefin);
         return "Salles";
     }
+
     public void processConsoleActionSearch(ActionEvent event) {
     }
 
-    public void processConsoleActionMakeReservation(String nom,Boolean available) {
-        System.out.println("hiiiii reda");
-        System.out.println("salam reda "+nom+available);
-        if(available)
-            sallesDao.makeSalleReserved(nom);
+
+    public void processConsoleActionDeleteSalle(int id) {
+
+        if (reservationsDao.isReserved(id))
+            return;
         else
-            sallesDao.makeSalleUnReserved(nom);
-
-    }
-    public void processConsoleActionDeleteSalle(String nom,Boolean available) {
-
             sallesDao.deleteSalle(nom);
-
-
     }
+
     @Override
     public String toString() {
         return "Salles{" +
@@ -186,15 +182,15 @@ public class Salles implements Serializable {
                 '}';
     }
 
-    public  String  addSalle() {
-        boolean persisted= sallesDao.addSalle((int) (Math.random() * 900) + 25,nom,capacite,departement,image);
-        if(persisted)
+    public String addSalle() {
+        boolean persisted = sallesDao.addSalle((int) (Math.random() * 900) + 25, nom, capacite, departement, image);
+        if (persisted)
             return "Salles";
         else
             return "addSalle";
     }
 
-    public  void processConsoleAction(ActionEvent event){
+    public void processConsoleAction(ActionEvent event) {
         System.out.println(event);
     }
 }

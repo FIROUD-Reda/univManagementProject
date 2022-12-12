@@ -10,12 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Local(ResourcesDao.class)
 @Stateless
 public class RessourcesDAOImpl implements  ResourcesDao {
-    public List<Ressources> getRessources() {
+    public List<Ressources> getRessources(String show, Date search_date_debut, Date search_date_fin) {
         Connection con = null;
         PreparedStatement ps = null;
         List<Ressources> ressourcesList = new ArrayList<>();
@@ -23,16 +24,31 @@ public class RessourcesDAOImpl implements  ResourcesDao {
 
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("Select nom,type,available,image,departement from ressources");
+
+            if (show.equals("all"))
+                ps = con.prepareStatement("Select id,nom,type,available,image,departement from ressources");
+            else if (show.equals("taken")) {
+                ps = con.prepareStatement("Select id,nom,type,available,image,departement from ressources " +
+                        "where id in (select resource_id from reservations where date_debut = ? and date_fin = ?)");
+                ps.setDate(1,  new java.sql.Date(search_date_debut.getTime()));
+                ps.setDate(2,  new java.sql.Date(search_date_fin.getTime()));
+            } else if (show.equals("available")) {
+                ps = con.prepareStatement("Select id,nom,type,available,image,departement from ressources " +
+                        "where id not in (select resource_id from reservations where date_debut = ? and date_fin = ?)");
+                ps.setDate(1,  new java.sql.Date(search_date_debut.getTime()));
+                ps.setDate(2,  new java.sql.Date(search_date_fin.getTime()));
+            }
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String nom = rs.getString("nom");
                 String type = rs.getString("type");
                 boolean available=rs.getBoolean("available");
                 String image=rs.getString("image");
                 String departement=rs.getString("departement");
                 //Assuming you have a user object
-                Ressources ressources = new Ressources(type,nom,available,departement,image);
+                Ressources ressources = new Ressources(type,nom,id,available,departement,image);
 
                 ressourcesList.add(ressources);
             }

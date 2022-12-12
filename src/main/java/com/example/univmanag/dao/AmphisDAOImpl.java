@@ -10,13 +10,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Local(AmphiDao.class)
 @Stateless
 public class AmphisDAOImpl implements AmphiDao {
 
-    public List<Amphis> getAmphis(String show) {
+    public List<Amphis> getAmphis(String show, Date search_date_debut, Date search_date_fin) {
         Connection con = null;
         PreparedStatement ps = null;
         List<Amphis> amphisList = new ArrayList<>();

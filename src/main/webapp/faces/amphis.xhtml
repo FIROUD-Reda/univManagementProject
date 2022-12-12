@@ -14,42 +14,89 @@
     <link rel="stylesheet" href="../WEB-INF/lib/register.css"/>
     <script type="text/javascript">
         function toggle(id) {
+
+            //   var id = element.id;
+            console.log(id)
             var e = document.getElementById(id);
+            console.log(e)
             if (e.style.display == 'block' || e.style.display == '') {
                 e.style.display = 'none';
             } else {
                 e.style.display = 'block';
             }
+            return false
         }
     </script>
 </h:head>
-<h:body style="background-color:#{amphis.theme};">
+<h:body style="background-color:#a7ccc5;">
+    <h:form>
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="./admin.xhtml"><h3 style="color: black">Home</h3></a>
+                </div>
+
+                <div class="nav-tabs">
+                    <ul class="nav navbar-nav">
+                        <c:choose>
+                            <c:when test="#{login.loggedIn}">
+                                <f:view>
+                                    <li class="nav-item">
+                                        <h:commandLink value="Logout" action="#{login.logout}" style="color: black"/>
+                                    </li>
+                                </f:view>
+                            </c:when>
+                            <c:otherwise>
+                                <f:view>
+                                    <li class="nav-item"> <a href="./login.xhtml" style="color: black">Login</a></li>
+                                    <li class="nav-item"><a href="./register.xhtml" style="color: black">Registr</a></li>
+                                </f:view>
+                            </c:otherwise>
+                        </c:choose>
+
+
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </h:form>
     <c:choose>
         <c:when test="#{session.getAttribute('role')=='user'}">
             <f:view>
-                <div>
+                <div style="background-color: #eee;">
                     <div class="text-center container py-5">
-
-
                         <h4 class="mt-4 mb-5" style="color:#{amphis.text};"><strong>Amphis </strong></h4>
-                        <h:form>
-                            <h:commandButton style="position: absolute ;
-            left: 180px;
-            top: 100px;
-            " class="btn btn-primary btn mb-1" value="Disponibles"
-                                             actionListener="#{amphis.processConsoleActionDisponible}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 300px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Réservés"
-                                             actionListener="#{amphis.processConsoleActionReserve}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 395px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Tous"
-                                             actionListener="#{amphis.processConsoleActionAll}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 465px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Theme"
-                                             actionListener="#{amphis.processConsoleActionTheme}"/>
+                        <h:form class="form-inline">
+                            <div class="form-check form-check-inline mb-5">
+                                <h:selectOneMenu value = "#{amphis.show}"  class="select-input">
+                                    <f:selectItem itemValue = "all" itemLabel = "Tous" />
+                                    <f:selectItem itemValue = "taken" itemLabel = "Réservés" />
+                                    <f:selectItem itemValue = "available" itemLabel = "Disponible" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-check form-check-inline mb-5">
+                                <label class="form-check-label" for="message">Date Début:</label>
+                                <h:inputText class="form-check-input" id="search_date_debut" value="#{amphis.search_date_debut}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                                <h:message for="search_date_debut">
+                                </h:message>
+                            </div>
+                            <div class="form-check form-check-inline mb-5">
+                                <label class="form-check-label" for="message">Date Fin:</label>
+                                <h:inputText id="search_date_fin" value="#{amphis.search_date_fin}"
+                                             class="form-check-input">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                                <h:message for="search_date_fin">
+                                </h:message>
+                            </div>
+
+                            <div class="form-check form-check-inline mb-5">
+                                <h:commandButton class="btn btn-primary btn form-check form-check-inline" value="  Chercher"
+                                                 actionListener="#{amphis.processConsoleActionSearch}"/>
+                            </div>
 
                         </h:form>
                         <div class="row">
@@ -58,16 +105,6 @@
                                     <div class="card" style="background-color:#{amphis.theme};">
                                         <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
                                             <img src="#{amphi.image}" class="w-100" height="250" alt="image amphi"/>
-                                            <a href="#!">
-                                                <div class="mask">
-                                                    <div class="d-flex justify-content-start align-items-end h-100">
-                                                        <h5><span
-                                                                class="#{amphi.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{amphi.available?"available":"non available"}</span>
-                                                        </h5>
-                                                    </div>
-                                                </div>
-
-                                            </a>
                                         </div>
                                         <div class="card-body">
                                             <a href="" class="text-reset">
@@ -79,16 +116,49 @@
                                             <h6 class="mb-3"></h6>
                                         </div>
                                         <div class="card-action">
-                                            <h:form>
-                                                <h:commandButton class="btn btn-primary btn mb-1" value="#{amphi.available?'reservé':'annuller'}"
-                                                                 action="#{amphis.processConsoleActionMakeReservation(amphi.nom,amphi.available)}"/>
+                                            <h:button class="btn btn-success btn mb-1 ml-1"
+                                                      onclick="toggle('res__#{amphi.id}'); return true ;"
+                                                      value="Reserver"/>
+
+                                            <h:form style="display: none;" id="res__#{amphi.id}">
+
+                                                <div class="form-outline mb-4">
+                                                    <label class="form-label" for="message">Date Debut</label>
+                                                    <h:inputText id="date_debut" value="#{reservation.datedebut}"
+                                                                 class="form-control form-control-lg">
+                                                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                                    </h:inputText>
+                                                    <h:message for="date_debut">
+                                                    </h:message>
+                                                </div>
+
+                                                <div class="form-outline mb-4">
+                                                    <label class="form-label" for="message">Date Fin</label>
+                                                    <h:inputText id="date_fin" value="#{reservation.datefin}"
+                                                                 class="form-control form-control-lg">
+                                                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                                    </h:inputText>
+                                                    <h:message for="date_fin">
+                                                    </h:message>
+                                                </div>
+                                                <div class="pt-1 mb-4">
+                                                    <h:commandButton
+                                                            action="#{reservation.processConsoleActionMakeReservation(amphi.nom,amphi.id,session.getAttribute('user_id'),session.getAttribute('username'))}"
+                                                            value="Reserver" class="btn btn-info btn-lg btn-block">
+                                                    </h:commandButton>
+                                                </div>
                                             </h:form>
-                                            <button class="btn btn-warning btn mb-1 ml-1" onclick = "toggle('recalamation');"  type="button">Reclamer</button>
-                                            <h:form style="display: none;" id="recalamation" >
+
+                                            <h:button class="btn btn-warning btn mb-1 ml-1"
+                                                      onclick="toggle('rec__#{amphi.id}'); return true ;"
+                                                      value="Reclamer"/>
+                                            <h:form style="display: none;" id="rec__#{amphi.id}">
+
 
                                                 <div class="form-outline mb-4">
                                                     <label class="form-label" for="message">Message</label>
-                                                    <h:inputTextarea id="message" value="#{reclamation.message}" class="form-control form-control-lg">
+                                                    <h:inputTextarea id="message" value="#{reclamation.message}"
+                                                                     class="form-control form-control-lg">
                                                     </h:inputTextarea>
                                                     <h:message for="message">
                                                     </h:message>
@@ -97,7 +167,8 @@
 
                                                 <div class="pt-1 mb-4">
                                                     <h:commandButton action="#{reclamation.sendMessage()}"
-                                                                     value="Envoyer" class="btn btn-info btn-lg btn-block">
+                                                                     value="Envoyer"
+                                                                     class="btn btn-info btn-lg btn-block">
                                                     </h:commandButton>
                                                 </div>
 
@@ -114,29 +185,41 @@
         </c:when>
         <c:otherwise>
             <f:view>
-                <div>
+                <div style="background-color: #eee;">
                     <div class="text-center container py-5">
 
 
                         <h4 class="mt-4 mb-5" style="color:#{amphis.text};"><strong>Amphis </strong></h4>
-                        <h:form>
-                            <h:commandButton style="position: absolute ;
-            left: 180px;
-            top: 100px;
-            " class="btn btn-primary btn mb-1" value="Disponibles"
-                                             actionListener="#{amphis.processConsoleActionDisponible}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 300px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Réservés"
-                                             actionListener="#{amphis.processConsoleActionReserve}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 395px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Tous"
-                                             actionListener="#{amphis.processConsoleActionAll}"/>
-                            <h:commandButton style="position: absolute ;
-            left: 465px;
-            top: 100px;" class="btn btn-primary btn mb-1" value="Theme"
-                                             actionListener="#{amphis.processConsoleActionTheme}"/>
+                        <h:form class="form-inline">
+                            <div class="form-check form-check-inline mb-5">
+                                <h:selectOneMenu value = "#{amphis.show}"  class="select-input">
+                                    <f:selectItem itemValue = "all" itemLabel = "Tous" />
+                                    <f:selectItem itemValue = "taken" itemLabel = "Réservés" />
+                                    <f:selectItem itemValue = "available" itemLabel = "Disponible" />
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-check form-check-inline mb-5">
+                                <label class="form-check-label" for="message">Date Début:</label>
+                                <h:inputText class="form-check-input" id="search_date_debut" value="#{amphis.search_date_debut}">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                                <h:message for="search_date_debut">
+                                </h:message>
+                            </div>
+                            <div class="form-check form-check-inline mb-5">
+                                <label class="form-check-label" for="message">Date Fin:</label>
+                                <h:inputText id="search_date_fin" value="#{amphis.search_date_fin}"
+                                             class="form-check-input">
+                                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                </h:inputText>
+                                <h:message for="search_date_fin">
+                                </h:message>
+                            </div>
+
+                            <div class="form-check form-check-inline mb-5">
+                                <h:commandButton class="btn btn-primary btn form-check form-check-inline" value="  Chercher"
+                                                 actionListener="#{amphis.processConsoleActionSearch}"/>
+                            </div>
 
                         </h:form>
                         <div class="row">
@@ -145,16 +228,6 @@
                                     <div class="card" style="background-color:#{amphis.theme};">
                                         <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light">
                                             <img src="#{amphi.image}" class="w-100" height="250" alt="image amphi"/>
-                                            <a href="#!">
-                                                <div class="mask">
-                                                    <div class="d-flex justify-content-start align-items-end h-100">
-                                                        <h5><span
-                                                                class="#{amphi.available?'badge ms-2 badge-primary':'badge ms-2 badge-danger'}">#{amphi.available?"available":"non available"}</span>
-                                                        </h5>
-                                                    </div>
-                                                </div>
-
-                                            </a>
                                         </div>
                                         <div class="card-body">
                                             <a href="" class="text-reset">
@@ -167,11 +240,11 @@
                                         </div>
                                         <div class="card-action">
                                             <h:form>
-                                                <h:commandButton class="btn btn-primary btn mb-1" value="#{amphi.available?'reservé':'annuller'}"
-                                                                 action="#{amphis.processConsoleActionMakeReservation(amphi.nom,amphi.available)}"/>
-                                                <h:commandButton class="#{amphi.available?'btn btn-warning btn mb-1 ml-1':'btn btn-danger btn mb-1 ml-1'}" value="#{amphi.available?'supprimer':'vous devez pas supprimez une salle réserve'}"
-                                                                 action="#{amphis.processConsoleActionDeleteAmphi(amphi.nom,amphi.available)}"/>
+
+                                                <h:commandButton class="btn btn-danger btn mb-1 ml-1" value="Supprimer"
+                                                                 action="#{amphis.processConsoleActionDeleteAmphi(amphi.id)}"/>
                                             </h:form>
+
                                         </div>
                                     </div>
                                 </div>

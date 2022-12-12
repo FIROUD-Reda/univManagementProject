@@ -1,5 +1,6 @@
 package com.example.univmanag.beans;
 
+import com.example.univmanag.dao.ReservationsDao;
 import com.example.univmanag.dao.ResourcesDao;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
@@ -8,7 +9,9 @@ import jakarta.inject.Named;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+
 @Named
 @SessionScoped
 public class Ressources implements Serializable {
@@ -20,9 +23,14 @@ public class Ressources implements Serializable {
     String image;
     File imaj;
 
+    private String show = "all";
+    private Date search_date_debut;
+    private Date search_date_fin;
     @EJB
-    ResourcesDao resourcesDao ;
+    ResourcesDao resourcesDao;
 
+    @EJB
+    private ReservationsDao reservationsDao;
 
     public File getImaj() {
         return imaj;
@@ -38,17 +46,17 @@ public class Ressources implements Serializable {
         this.id = id;
         this.available = available;
         this.departement = departement;
-        this.image=image;
+        this.image = image;
 
     }
 
-    public Ressources(String type, String nom, boolean available, String departement,String image) {
+    public Ressources(String type, String nom, boolean available, String departement, String image) {
         this.type = type;
-        this.id =  (int) (Math.random() * 900) + 25;
+        this.id = (int) (Math.random() * 900) + 25;
         this.nom = nom;
         this.available = available;
         this.departement = departement;
-        this.image=image;
+        this.image = image;
     }
 
     public Ressources() {
@@ -104,32 +112,62 @@ public class Ressources implements Serializable {
     }
 
     public List<Ressources> getRessources() {
-        return resourcesDao.getRessources();
+        return resourcesDao.getRessources(show, search_date_debut, search_date_fin);
     }
 
     public String addRessource() {
-        boolean persisterd=resourcesDao.addRessource((int) (Math.random() * 900) + 25,nom,type,departement,image);
-        if(persisterd)
+        boolean persisterd = resourcesDao.addRessource((int) (Math.random() * 900) + 25, nom, type, departement, image);
+        if (persisterd)
             return "ressources";
         else
             return "addRessource";
     }
 
-    public  void processConsoleAction(ActionEvent event){
+    public void processConsoleAction(ActionEvent event) {
         System.out.println(event);
     }
-    public void processConsoleActionMakeReservation(String nom,Boolean available) {
 
-        if(available)
+    public void processConsoleActionMakeReservation(String nom, Boolean available) {
+
+        if (available)
             resourcesDao.makeResourcesReserved(nom);
         else
             resourcesDao.makeResourcesUnReserved(nom);
 
     }
-    public void processConsoleActionDeleteResources(String nom,Boolean available) {
 
-        resourcesDao.deleteResources(nom);
+    public void processConsoleActionDeleteResources(int id) {
 
+        if (reservationsDao.isReserved(id))
+            return;
+        else
+            resourcesDao.deleteResources(nom);
+    }
 
+    public void processConsoleActionSearch(ActionEvent event) {
+    }
+
+    public String getShow() {
+        return show;
+    }
+
+    public void setShow(String show) {
+        this.show = show;
+    }
+
+    public Date getSearch_date_debut() {
+        return search_date_debut;
+    }
+
+    public void setSearch_date_debut(Date search_date_debut) {
+        this.search_date_debut = search_date_debut;
+    }
+
+    public Date getSearch_date_fin() {
+        return search_date_fin;
+    }
+
+    public void setSearch_date_fin(Date search_date_fin) {
+        this.search_date_fin = search_date_fin;
     }
 }
