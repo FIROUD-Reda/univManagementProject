@@ -28,16 +28,23 @@ public class SallesDAOImpl implements SallesDao {
             assert con != null;
             if (show.equals("all"))
                 ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles");
-            else if (show.equals("taken")) {
+            else if (show.equals("taken") && search_date_debut != null && search_date_fin != null) {
                 ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles " +
                         "where id in (select resource_id from reservations where date_debut = ? and date_fin = ?)");
-                ps.setDate(1,  new java.sql.Date(search_date_debut.getTime()));
-                ps.setDate(2,  new java.sql.Date(search_date_fin.getTime()));
-            } else if (show.equals("available")) {
+                ps.setDate(1, new java.sql.Date(search_date_debut.getTime()));
+                ps.setDate(2, new java.sql.Date(search_date_fin.getTime()));
+
+            } else if (show.equals("taken") && search_date_debut == null && search_date_fin == null) {
+                ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles " +
+                        "where id in (select resource_id from reservations )");
+            } else if (show.equals("available") && search_date_debut != null && search_date_fin != null) {
                 ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles " +
                         "where id not in (select resource_id from reservations where date_debut = ? and date_fin = ?)");
-                ps.setDate(1,  new java.sql.Date(search_date_debut.getTime()));
-                ps.setDate(2,  new java.sql.Date(search_date_fin.getTime()));
+                ps.setDate(1, new java.sql.Date(search_date_debut.getTime()));
+                ps.setDate(2, new java.sql.Date(search_date_fin.getTime()));
+            } else if (show.equals("available") && search_date_debut == null && search_date_fin == null) {
+                ps = con.prepareStatement("Select id, nom, capacite, available,image,departement from salles " +
+                        "where id not in (select resource_id from reservations)");
             }
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -48,7 +55,7 @@ public class SallesDAOImpl implements SallesDao {
                 String departement = rs.getString("departement");
                 int id = rs.getInt("id");
                 //Assuming you have a user object
-                Salles salles = new Salles(nom, id,capacite, available, image, departement);
+                Salles salles = new Salles(nom, id, capacite, available, image, departement);
 
                 sallesList.add(salles);
             }

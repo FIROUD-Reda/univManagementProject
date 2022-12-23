@@ -73,6 +73,21 @@
                                      action="#{login.reroute('Salles')}" value="Demande des salles"/>
                 </h:form>
 
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
+                margin: 7px;
+            width: 250px;
+            height: 250px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px ;
+            border-color: transparent;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
+
+                                     action="#{login.reroute('reservations')}" value="Mes Réservations"/>
+                </h:form>
+
             </div>
         </c:when>
         <c:otherwise>
@@ -129,6 +144,20 @@
                                      action="#{login.reroute('Salles')}" value="Gestion des salles"/>
                 </h:form>
 
+                <h:form>
+                    <h:commandButton class="btn"
+                                     style="background:  rgba(0, 0, 0, 0.6);
+                margin: 7px;
+            width: 250px;
+            height: 250px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px ;
+            border-color: transparent;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;"
+
+                                     action="#{login.reroute('reservations')}" value="Gestion des Réservations"/>
+                </h:form>
 
             </div>
         </c:otherwise>

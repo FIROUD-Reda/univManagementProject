@@ -141,7 +141,7 @@ public class Ressources implements Serializable {
         if (reservationsDao.isReserved(id))
             return;
         else
-            resourcesDao.deleteResources(nom);
+            resourcesDao.deleteResources(id);
     }
 
     public void processConsoleActionSearch(ActionEvent event) {

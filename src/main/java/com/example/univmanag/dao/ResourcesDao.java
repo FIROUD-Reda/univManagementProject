@@ -9,6 +9,6 @@ public interface ResourcesDao {
     public  boolean addRessource(int i, String nom, String type, String departement, String image);
     void makeResourcesUnReserved(String nom);
     void    makeResourcesReserved(String nom);
-    void deleteResources(String nom);
+    void deleteResources(int id);
 
 }

@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="UnivManag-1.0-SNAPSHOT.war">
+    <root id="archive" name="univManag-1.0-SNAPSHOT.war">
       <element id="artifact" artifact-name="UnivManag:war exploded" />
     </root>
   </artifact>
