@@ -1,8 +1,8 @@
 package com.example.univmanag.dao;
 
 import com.example.univmanag.beans.SessionUtils;
+import com.example.univmanag.dao.facade.LoginDao;
 import com.example.univmanag.util.DataConnect;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
 import jakarta.servlet.http.HttpSession;

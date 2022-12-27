@@ -1,6 +1,7 @@
 package com.example.univmanag.dao;
 
 import com.example.univmanag.beans.Amphis;
+import com.example.univmanag.dao.facade.AmphiDao;
 import com.example.univmanag.util.DataConnect;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;

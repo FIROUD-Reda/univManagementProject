@@ -1,15 +1,11 @@
 package com.example.univmanag.beans;
 
-import com.example.univmanag.dao.LoginDao;
-import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.Serializable;
-import java.util.logging.Logger;
+
 import com.example.univmanag.jms.*;
 
 @Named

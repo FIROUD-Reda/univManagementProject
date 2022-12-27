@@ -1,4 +1,4 @@
-package com.example.univmanag.dao;
+package com.example.univmanag.dao.facade;
 import com.example.univmanag.beans.Salle;
 import com.example.univmanag.beans.Salles;
 

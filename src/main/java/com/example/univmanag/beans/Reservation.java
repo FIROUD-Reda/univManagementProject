@@ -1,14 +1,12 @@
 package com.example.univmanag.beans;
 
-import com.example.univmanag.dao.ReservationsDao;
-import com.example.univmanag.dao.SallesDao;
+import com.example.univmanag.dao.facade.ReservationsDao;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.event.ActionEvent;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 

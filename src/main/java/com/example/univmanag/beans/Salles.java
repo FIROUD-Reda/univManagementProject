@@ -1,7 +1,7 @@
 package com.example.univmanag.beans;
 
-import com.example.univmanag.dao.ReservationsDao;
-import com.example.univmanag.dao.SallesDao;
+import com.example.univmanag.dao.facade.ReservationsDao;
+import com.example.univmanag.dao.facade.SallesDao;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.event.ActionEvent;

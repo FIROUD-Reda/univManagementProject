@@ -1,4 +1,4 @@
-package com.example.univmanag.dao;
+package com.example.univmanag.dao.facade;
 
 
 public interface LoginDao {

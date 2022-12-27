@@ -1,7 +1,7 @@
 package com.example.univmanag.dao;
 
 import com.example.univmanag.beans.Reservation;
-import com.example.univmanag.beans.Ressources;
+import com.example.univmanag.dao.facade.ReservationsDao;
 import com.example.univmanag.util.DataConnect;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;

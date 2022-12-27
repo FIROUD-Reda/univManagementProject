@@ -3,8 +3,7 @@ package com.example.univmanag.beans;
 import java.io.Serializable;
 
 
-import com.example.univmanag.dao.LoginDAOImpl;
-import com.example.univmanag.dao.LoginDao;
+import com.example.univmanag.dao.facade.LoginDao;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;

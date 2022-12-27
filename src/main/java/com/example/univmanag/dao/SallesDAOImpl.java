@@ -2,6 +2,7 @@ package com.example.univmanag.dao;
 
 import com.example.univmanag.beans.Salle;
 import com.example.univmanag.beans.Salles;
+import com.example.univmanag.dao.facade.SallesDao;
 import com.example.univmanag.util.DataConnect;
 import jakarta.ejb.Local;
 import jakarta.ejb.Stateless;
