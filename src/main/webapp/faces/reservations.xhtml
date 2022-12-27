@@ -33,8 +33,9 @@
                             </c:when>
                             <c:otherwise>
                                 <f:view>
-                                    <li class="nav-item"> <a href="./login.xhtml" style="color: black">Login</a></li>
-                                    <li class="nav-item"><a href="./register.xhtml" style="color: black">Registr</a></li>
+                                    <li class="nav-item"><a href="./login.xhtml" style="color: black">Login</a></li>
+                                    <li class="nav-item"><a href="./register.xhtml" style="color: black">Registr</a>
+                                    </li>
                                 </f:view>
                             </c:otherwise>
                         </c:choose>
@@ -82,25 +83,25 @@
 
                         </h:form>
 
-                         <table class="table">
-                                <thead class="thead-dark">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Ressource</th>
+                                <th scope="col">Date debut</th>
+                                <th scope="col">Date fin</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="ressource" items="#{reservation.getReservations()}">
                                 <tr>
-                                    <th scope="col">Ressource</th>
-                                    <th scope="col">Date debut</th>
-                                    <th scope="col">Date fin</th>
-                                    <th scope="col">Status</th>
+                                    <td>#{ressource.resourceName}</td>
+                                    <td>#{ressource.datedebut}</td>
+                                    <td>#{ressource.datefin}</td>
+                                    <td>#{ressource.status}</td>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                   <c:forEach var="ressource" items="#{reservation.getReservations()}" >
-                                     <tr>
-                                        <td>#{ressource.resourceName}</td>
-                                        <td>#{ressource.datedebut}</td>
-                                        <td>#{ressource.datefin}</td>
-                                        <td>#{ressource.status}</td>
-                                     </tr>
-                                   </c:forEach>
-                                </tbody>
+                            </c:forEach>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -115,7 +116,8 @@
                         <h:form class="form-inline">
                             <div class="form-check form-check-inline mb-5">
                                 <label class="form-check-label" for="message">Date Début:</label>
-                                <h:inputText class="form-check-input" id="search_date_debut" value="#{reservation.search_date_debut}">
+                                <h:inputText class="form-check-input" id="search_date_debut"
+                                             value="#{reservation.search_date_debut}">
                                     <f:convertDateTime pattern="yyyy-MM-dd"/>
                                 </h:inputText>
                                 <h:message for="search_date_debut">
@@ -132,7 +134,8 @@
                             </div>
 
                             <div class="form-check form-check-inline mb-5">
-                                <h:commandButton class="btn btn-primary btn form-check form-check-inline" value="  Chercher"
+                                <h:commandButton class="btn btn-primary btn form-check form-check-inline"
+                                                 value="  Chercher"
                                                  actionListener="#{reservation.getReservations()}"/>
                             </div>
 
@@ -150,7 +153,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach var="ressource" items="#{reservation.getReservations()}" >
+                            <c:forEach var="ressource" items="#{reservation.getReservations()}">
                                 <tr>
                                     <td>#{ressource.resourceName}</td>
                                     <td>#{ressource.datedebut}</td>
@@ -158,12 +161,25 @@
                                     <td>#{ressource.username}</td>
                                     <td>#{ressource.status}</td>
                                     <td>
-                                        <h:commandButton class="btn btn-danger btn form-check form-check-inline" value="  Supprimer"
-                                                         actionListener="#{reservation.processConsoleActionDeleteReservation(ressource.id)}"/>
-                                    </td>
-                                    <td>   <h:commandButton class="btn btn-warning btn form-check form-check-inline" value="  Annuler"
+                                        <h:form>
 
-                                                         actionListener="#{reservation.processConsoleActionCancelReservation(reservation.id)}"/>
+                                            <h:commandButton class="btn btn-danger btn form-check form-check-inline"
+                                                             value="  Supprimer"
+                                                             actionListener="#{reservation.processConsoleActionDeleteReservation(ressource.id)}"/>
+                                        </h:form>
+
+
+                                    </td>
+                                    <td>
+
+                                        <h:form>
+
+                                            <h:commandButton class="btn btn-warning btn form-check form-check-inline"
+                                                             value="  Annuler"
+
+                                                             agit add ctionListener="#{reservation.processConsoleActionCancelReservation(ressource.id)}"/>
+                                        </h:form>
+
                                     </td>
                                 </tr>
                             </c:forEach>

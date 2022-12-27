@@ -67,7 +67,7 @@ public class UsersDAOImpl implements UsersDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("delete from users where id=?");
+            ps = con.prepareStatement("delete from users where uid=?");
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -85,7 +85,7 @@ public class UsersDAOImpl implements UsersDao {
         try {
             con = DataConnect.getConnection();
             assert con != null;
-            ps = con.prepareStatement("update users set status = ? where id=?");
+            ps = con.prepareStatement("update users set status = ? where uid=?");
             ps.setInt(2, id);
             ps.setBoolean(1, false);
             ps.executeUpdate();

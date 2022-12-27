@@ -72,7 +72,7 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Username</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">Faculty</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                                 <th scope="col"></th>
@@ -85,12 +85,20 @@
                                     <td>#{ressource.email}</td>
                                     <td>#{ressource.status}</td>
                                     <td>
+                                        <h:form>
+
                                         <h:commandButton class="btn btn-danger btn form-check form-check-inline" value="  Supprimer"
                                                          actionListener="#{users.processConsoleActionDeleteUser(ressource.id)}"/>
-                                    </td>
-                                    <td>   <h:commandButton class="btn btn-warning btn form-check form-check-inline" value="  Bloquer"
+                                        </h:form>
 
-                                                         actionListener="#{users.processConsoleActionBlockUser(reservation.id)}"/>
+                                    </td>
+                                    <td>
+                                        <h:form>
+                                        <h:commandButton class="btn btn-warning btn form-check form-check-inline" value="  Bloquer"
+
+                                                         actionListener="#{users.processConsoleActionBlockUser(ressource.id)}"/>
+                                        </h:form>
+
                                     </td>
                                 </tr>
                             </c:forEach>
